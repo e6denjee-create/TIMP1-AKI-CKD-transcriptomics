@@ -24,6 +24,11 @@ causality.
 The complete archive, including the >100 MB exploratory single-cell RDS object,
 is intended for Zenodo because GitHub rejects individual files above 100 MB.
 
+## Archived release
+
+- GitHub release: https://github.com/e6denjee-create/TIMP1-AKI-CKD-transcriptomics/releases/tag/v1.0.0
+- Zenodo DOI: https://doi.org/10.5281/zenodo.20680932
+
 ## Public datasets
 
 NCBI GEO: GSE139061, GSE30718, GSE66494, GSE180394, GSE210622, and GSE267242.

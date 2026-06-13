@@ -46,7 +46,10 @@ ADDRESS = (
     "No. 99 Longcheng Avenue, Xiaodian District, Taiyuan City, "
     "Shanxi Province 030032, China"
 )
-REPOSITORY_PLACEHOLDER = "Repository URL and archival DOI will be inserted after public release."
+GITHUB_URL = "https://github.com/e6denjee-create/TIMP1-AKI-CKD-transcriptomics"
+GITHUB_RELEASE_URL = f"{GITHUB_URL}/releases/tag/v1.0.0"
+ZENODO_DOI = "10.5281/zenodo.20680932"
+ZENODO_DOI_URL = f"https://doi.org/{ZENODO_DOI}"
 
 RECENT_PMIDS = [
     "39298548",
@@ -334,7 +337,8 @@ def build_manuscript() -> None:
         "Omnibus under accession numbers GSE139061, GSE30718, GSE66494, GSE180394, "
         "GSE210622, and GSE267242. Analysis code, derived tables, intermediate outputs, "
         "session information, source data for figures, and publication-quality figures "
-        f"will be archived in a public GitHub repository and Zenodo record. {REPOSITORY_PLACEHOLDER}"
+        f"are publicly available at {GITHUB_URL}. The archived version of record is "
+        f"available from Zenodo at {ZENODO_DOI_URL}."
     )
     doc.add_heading("Acknowledgments", level=1)
     doc.add_paragraph(
@@ -550,7 +554,7 @@ def build_repository() -> None:
     REPO.mkdir(parents=True, exist_ok=True)
     ZENODO.mkdir(parents=True, exist_ok=True)
 
-    copy_tree_contents(ROOT / "scripts", REPO / "scripts", (".r", ".py"))
+    copy_tree_contents(ROOT / "scripts", REPO / "scripts", (".r", ".py", ".ps1"))
     copy_tree_contents(ROOT / "results/timp1_validation", REPO / "results/timp1_validation")
     copy_tree_contents(ROOT / "figures/timp1_validation", REPO / "figures/timp1_validation", (".pdf", ".png"))
     copy_tree_contents(ROOT / "TIMP1_AKI_CKD_project/data/processed", REPO / "data/processed", (".gz", ".csv"))
@@ -590,6 +594,11 @@ causality.
 
 The complete archive, including the >100 MB exploratory single-cell RDS object,
 is intended for Zenodo because GitHub rejects individual files above 100 MB.
+
+## Archived release
+
+- GitHub release: {GITHUB_RELEASE_URL}
+- Zenodo DOI: {ZENODO_DOI_URL}
 
 ## Public datasets
 
@@ -633,7 +642,8 @@ authors:
 version: 1.0.0
 date-released: 2026-06-13
 license: MIT
-repository-code: "TO_BE_ASSIGNED"
+repository-code: "{GITHUB_URL}"
+doi: "{ZENODO_DOI}"
 """
     (REPO / "CITATION.cff").write_text(citation, encoding="utf-8")
     (ZENODO / "CITATION.cff").write_text(citation, encoding="utf-8")
@@ -684,10 +694,11 @@ Authors
 - Correspondence: jiyanzhao@sxbqeh.com.cn
 
 Repository status
-- A GitHub-ready package is under public_repository/TIMP1_AKI_CKD_transcriptomics.
-- A complete Zenodo payload, including the large single-cell RDS object, is
-  under public_repository/TIMP1_AKI_CKD_transcriptomics_zenodo_payload.
-- The manuscript intentionally does not contain a fabricated URL or DOI.
+- Public GitHub repository: {GITHUB_URL}
+- GitHub release v1.0.0: {GITHUB_RELEASE_URL}
+- Zenodo DOI: {ZENODO_DOI_URL}
+- The complete local Zenodo payload is under
+  public_repository/TIMP1_AKI_CKD_transcriptomics_zenodo_payload.
 """
     (OUT / "README_Submission_Files.txt").write_text(text, encoding="utf-8")
 

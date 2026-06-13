@@ -11,4 +11,5 @@ authors:
 version: 1.0.0
 date-released: 2026-06-13
 license: MIT
-repository-code: "TO_BE_ASSIGNED"
+repository-code: "https://github.com/e6denjee-create/TIMP1-AKI-CKD-transcriptomics"
+doi: "10.5281/zenodo.20680932"
