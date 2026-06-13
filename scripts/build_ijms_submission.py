@@ -124,12 +124,28 @@ def format_recent_reference(row: pd.Series) -> str:
 
 
 def load_references() -> list[str]:
-    refs = list(CLASSIC_REFERENCES)
     library = pd.read_csv(OUT / "references_verified.csv", dtype={"pmid": str})
     by_pmid = library.set_index("pmid")
-    for pmid in RECENT_PMIDS:
-        if pmid in by_pmid.index:
-            refs.append(format_recent_reference(by_pmid.loc[pmid]))
+    refs = list(CLASSIC_REFERENCES[:8])
+    ordered_groups = [
+        ["39298548", "36142787", "26768243", "39113797", "32303283", "33073587", "32571916", "39110788", "31000567", "35922662", "38126209", "36229672", "33411069"],
+        ["CLASSIC_ATLAS"],
+        ["36932062", "33176333", "35491858", "36265491", "38513647", "39016438", "35709763", "38351505", "37130011"],
+        ["CLASSIC_TIMP"],
+        ["35513123"],
+        ["CLASSIC_TGFB"],
+        ["35064106", "38977708", "39572154", "38609039", "34560077", "38086793"],
+    ]
+    for group in ordered_groups:
+        for item in group:
+            if item == "CLASSIC_ATLAS":
+                refs.append(CLASSIC_REFERENCES[9])
+            elif item == "CLASSIC_TIMP":
+                refs.append(CLASSIC_REFERENCES[8])
+            elif item == "CLASSIC_TGFB":
+                refs.append(CLASSIC_REFERENCES[10])
+            elif item in by_pmid.index:
+                refs.append(format_recent_reference(by_pmid.loc[item]))
     return refs
 
 
@@ -265,16 +281,16 @@ def build_manuscript() -> None:
     )
 
     citation_updates = {
-        source.paragraphs[15].text: source.paragraphs[15].text.replace("[1,2]", "[1,2,12,13,29-32]").replace("[2-4]", "[2-4,14,15]").replace("[2,5]", "[2,5,16-18]"),
-        source.paragraphs[16].text: source.paragraphs[16].text.replace("[6,7]", "[6,7,18,19,33,39,40]").replace("[8]", "[8,20,23,24]"),
-        source.paragraphs[17].text: source.paragraphs[17].text + " Recent single-cell and spatial atlases further show that injury-associated epithelial, immune, endothelial, and stromal states are spatially and molecularly heterogeneous [10,14-20,26-28,34].",
-        source.paragraphs[18].text: source.paragraphs[18].text.replace("[9]", "[9,25]") + " Experimental evidence linking TIMP1 expression with kidney fibrosis susceptibility supports investigation of this association while not proving direct causality [25].",
+        source.paragraphs[15].text: source.paragraphs[15].text,
+        source.paragraphs[16].text: source.paragraphs[16].text.replace("[8]", "[8-21]"),
+        source.paragraphs[17].text: source.paragraphs[17].text + " Recent single-cell and spatial atlases further show that injury-associated epithelial, immune, endothelial, and stromal states are spatially and molecularly heterogeneous [22-31].",
+        source.paragraphs[18].text: source.paragraphs[18].text.replace("[9]", "[32,33]") + " Experimental evidence linking TIMP1 expression with kidney fibrosis susceptibility supports investigation of this association while not proving direct causality [33].",
         source.paragraphs[19].text: source.paragraphs[19].text + " The overall validation workflow is summarized in Figure 1.",
         source.paragraphs[31].text: source.paragraphs[31].text.replace("Supplementary Table S1", "Supplementary Table S3"),
-        source.paragraphs[68].text: source.paragraphs[68].text.replace("[1-4]", "[1-4,12-15,29-33]").replace("[6,7]", "[6,7,18,19,23,24,39,40]"),
-        source.paragraphs[69].text: source.paragraphs[69].text.replace("[9]", "[9,11,16,21,22,25,35-38]"),
-        source.paragraphs[71].text: source.paragraphs[71].text + " Comparable compartment-resolved kidney atlases demonstrate the value of validating such programs across epithelial and stromal contexts [10,14-20,26-28,34].",
-        source.paragraphs[74].text: source.paragraphs[74].text.replace("[10]", "[10,14-20,26-28,34]"),
+        source.paragraphs[68].text: source.paragraphs[68].text.replace("[1-4]", "[1-4,9-21]").replace("[6,7]", "[6,7,15-21]"),
+        source.paragraphs[69].text: source.paragraphs[69].text.replace("[9]", "[32-40]"),
+        source.paragraphs[71].text: source.paragraphs[71].text + " Comparable compartment-resolved kidney atlases demonstrate the value of validating such programs across epithelial and stromal contexts [22-31].",
+        source.paragraphs[74].text: source.paragraphs[74].text.replace("[10]", "[22-31]"),
     }
 
     add_section_content(doc, section_paragraphs(source, "Introduction", "Methods"), citation_updates)
@@ -530,12 +546,9 @@ def copy_tree_contents(source: Path, destination: Path, patterns: tuple[str, ...
 
 
 def build_repository() -> None:
-    if REPO.exists():
-        shutil.rmtree(REPO)
-    if ZENODO.exists():
-        shutil.rmtree(ZENODO)
-    REPO.mkdir(parents=True)
-    ZENODO.mkdir(parents=True)
+    # Preserve an initialized Git repository and refresh tracked content in place.
+    REPO.mkdir(parents=True, exist_ok=True)
+    ZENODO.mkdir(parents=True, exist_ok=True)
 
     copy_tree_contents(ROOT / "scripts", REPO / "scripts", (".r", ".py"))
     copy_tree_contents(ROOT / "results/timp1_validation", REPO / "results/timp1_validation")
@@ -545,7 +558,7 @@ def build_repository() -> None:
     shutil.copy2(ROOT / "AGENTS.md", REPO / "ANALYSIS_GUARDRAILS.md")
 
     for folder in ["scripts", "results", "figures", "data"]:
-        shutil.copytree(REPO / folder, ZENODO / folder)
+        shutil.copytree(REPO / folder, ZENODO / folder, dirs_exist_ok=True)
     large_rds = ROOT / "TIMP1_AKI_CKD_project/data/processed/GSE210622_GSM6433706_seurat.rds"
     if large_rds.exists():
         target = ZENODO / "data/processed"
