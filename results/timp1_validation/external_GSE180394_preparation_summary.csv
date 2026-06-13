@@ -1,0 +1,2 @@
+"GEO_accession","platform","tissue_compartment","total_series_samples","disease_samples","living_donor_controls","excluded_tumor_nephrectomy_unaffected","probe_rows","mapped_unique_gene_symbols","expression_min","expression_max"
+"GSE180394","GPL19983","Microdissected tubules from human kidney biopsy",59,44,9,6,24845,24845,-0.603437969,11.51290433

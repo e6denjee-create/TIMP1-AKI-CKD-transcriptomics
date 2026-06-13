@@ -1,0 +1,2 @@
+"dataset","contrast","n_disease","n_control","disease_mean","control_mean","group_difference","hedges_g","p_value","bh_adjusted_p_value"
+"TEMPLATE_SMOKE_GSE66494_NOT_INDEPENDENT","CKD vs Control",53,8,3.28108481106289,2.86446798730586,0.41661682375703,0.44888167320389,0.227375389125257,0.227375389125257

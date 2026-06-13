@@ -1,0 +1,2 @@
+"dataset","contrast","n_disease","n_control","disease_mean","control_mean","group_difference","hedges_g","p_value","bh_adjusted_p_value"
+"GSE180394","Disease vs Control",44,9,5.06933043425,3.75173349555556,1.31759693869444,1.56888512152444,8.00623893115748e-05,8.00623893115748e-05

@@ -1,0 +1,3 @@
+"dataset","scope","feature","rho","p_value","n","bh_adjusted_p_value"
+"GSE180394","all_samples","stringent_TIMP1_module_score",0.879374294468634,0,53,0
+"GSE180394","disease_only","stringent_TIMP1_module_score",0.849612403100775,0,44,0

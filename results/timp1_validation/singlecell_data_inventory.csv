@@ -1,0 +1,10 @@
+"dataset","resource","path","exists","bytes"
+"GSE210622","expression_matrix","C:/Users/dell/OneDrive/文档/LOXL4/TIMP1_AKI_CKD_project/data/raw/GSE210622/GSM6433706/matrix.mtx.gz",TRUE,132357246
+"GSE210622","barcodes","C:/Users/dell/OneDrive/文档/LOXL4/TIMP1_AKI_CKD_project/data/raw/GSE210622/GSM6433706/barcodes.tsv.gz",TRUE,20921369
+"GSE210622","features","C:/Users/dell/OneDrive/文档/LOXL4/TIMP1_AKI_CKD_project/data/raw/GSE210622/GSM6433706/features.tsv.gz",TRUE,304958
+"GSE210622","cell_metadata","C:/Users/dell/OneDrive/文档/LOXL4/TIMP1_AKI_CKD_project/data/metadata/GSE210622_GSM6433706_cell_metadata.csv",TRUE,3328842
+"GSE267242","expression_matrix","C:/Users/dell/OneDrive/文档/LOXL4/TIMP1_AKI_CKD_project/data/raw/GSE267242/matrix.mtx.gz",FALSE,
+"GSE267242","barcodes","C:/Users/dell/OneDrive/文档/LOXL4/TIMP1_AKI_CKD_project/data/raw/GSE267242/barcodes.tsv.gz",TRUE,35131412
+"GSE267242","features","C:/Users/dell/OneDrive/文档/LOXL4/TIMP1_AKI_CKD_project/data/raw/GSE267242/features.tsv.gz",TRUE,290896
+"GSE267242","cell_metadata","C:/Users/dell/OneDrive/文档/LOXL4/TIMP1_AKI_CKD_project/data/metadata/GSE267242_cell_metadata.csv",FALSE,
+"GSE210622","Seurat_RDS","C:/Users/dell/OneDrive/文档/LOXL4/TIMP1_AKI_CKD_project/data/processed/GSE210622_GSM6433706_seurat.rds",TRUE,214199197

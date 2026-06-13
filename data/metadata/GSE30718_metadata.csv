@@ -1,0 +1,40 @@
+sample,title,source,characteristics_1,characteristics_2,group,comparison
+GSM761707,Acute kidney injury AKI 374A2AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761708,Acute kidney injury AKI 306A2AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761709,Acute kidney injury AKI 380A1AX13,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761710,Acute kidney injury AKI 95A2AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761711,Acute kidney injury AKI 220A3AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761712,Acute kidney injury AKI 513A2AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761713,Acute kidney injury AKI 255A4AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761714,Acute kidney injury AKI 397A3AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761715,Acute kidney injury AKI 289A1AGX8,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761716,Acute kidney injury AKI 82A4AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761717,Acute kidney injury AKI 281A2AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761718,Acute kidney injury AKI 332A2AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761719,Acute kidney injury AKI 337A2AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761720,Acute kidney injury AKI 338A2AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761721,Acute kidney injury AKI 366A2AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761722,Acute kidney injury AKI 406A2AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761723,Acute kidney injury AKI 116A4AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761724,Acute kidney injury AKI 292A2AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761725,Acute kidney injury AKI 72A3AGX9,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761726,Acute kidney injury AKI 128A4AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761727,Acute kidney injury AKI 126A4AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761728,Acute kidney injury AKI 49A2AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761729,Acute kidney injury AKI 49A1AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761730,Acute kidney injury AKI 47A1AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761731,Acute kidney injury AKI 24A1AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761732,Acute kidney injury AKI 60A2AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761733,Acute kidney injury AKI 56A1AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761734,Acute kidney injury AKI 56A2AGX7,renal allograft biopsy,diagnosis: Acute kidney injury AKI,tissue: kidney,AKI,AKI_vs_Control
+GSM761743,pristine protocol biopsy pPB1,protocol biopsy,diagnosis: pristine protocol biopsy,tissue: kidney,Control,AKI_vs_Control
+GSM761744,pristine protocol biopsy pPB2,protocol biopsy,diagnosis: pristine protocol biopsy,tissue: kidney,Control,AKI_vs_Control
+GSM761745,pristine protocol biopsy pPB3,protocol biopsy,diagnosis: pristine protocol biopsy,tissue: kidney,Control,AKI_vs_Control
+GSM761746,pristine protocol biopsy pPB4,protocol biopsy,diagnosis: pristine protocol biopsy,tissue: kidney,Control,AKI_vs_Control
+GSM761747,pristine protocol biopsy pPB5,protocol biopsy,diagnosis: pristine protocol biopsy,tissue: kidney,Control,AKI_vs_Control
+GSM761748,pristine protocol biopsy pPB6,protocol biopsy,diagnosis: pristine protocol biopsy,tissue: kidney,Control,AKI_vs_Control
+GSM761749,pristine protocol biopsy pPB7,protocol biopsy,diagnosis: pristine protocol biopsy,tissue: kidney,Control,AKI_vs_Control
+GSM761750,pristine protocol biopsy pPB8,protocol biopsy,diagnosis: pristine protocol biopsy,tissue: kidney,Control,AKI_vs_Control
+GSM761751,pristine protocol biopsy pPB9,protocol biopsy,diagnosis: pristine protocol biopsy,tissue: kidney,Control,AKI_vs_Control
+GSM761752,pristine protocol biopsy pPB10,protocol biopsy,diagnosis: pristine protocol biopsy,tissue: kidney,Control,AKI_vs_Control
+GSM761753,pristine protocol biopsy pPB11,protocol biopsy,diagnosis: pristine protocol biopsy,tissue: kidney,Control,AKI_vs_Control

@@ -1,0 +1,78 @@
+"analysis_step","dataset","missing_item","reason","action_taken","timestamp"
+"module_enrichment","MSigDB","C5:GO:BP","Failed to open file C:\Users\dell\AppData\Local\R\cache\R\msigdbr\msigdb.2026.1.zip.curltmp.","Skipped unavailable enrichment database and continued.","2026-06-12 23:12:14"
+"module_enrichment","MSigDB","C2:CP:REACTOME","Failed to open file C:\Users\dell\AppData\Local\R\cache\R\msigdbr\msigdb.2026.1.zip.curltmp.","Skipped unavailable enrichment database and continued.","2026-06-12 23:12:14"
+"module_enrichment","MSigDB","C2:CP:KEGG_MEDICUS","Failed to open file C:\Users\dell\AppData\Local\R\cache\R\msigdbr\msigdb.2026.1.zip.curltmp.","Skipped unavailable enrichment database and continued.","2026-06-12 23:12:14"
+"singlecell_validation","GSE267242","C:/Users/dell/OneDrive/文档/LOXL4/TIMP1_AKI_CKD_project/data/metadata/GSE267242_cell_metadata.csv","Cell metadata file is absent.","Patient-level analysis was not attempted.","2026-06-12 23:14:04"
+"singlecell_validation","GSE267242","expression_matrix","Required local file is absent: C:/Users/dell/OneDrive/文档/LOXL4/TIMP1_AKI_CKD_project/data/raw/GSE267242/matrix.mtx.gz","Patient-level analysis was not attempted.","2026-06-12 23:14:04"
+"singlecell_validation","GSE267242","cell_metadata","Required local file is absent: C:/Users/dell/OneDrive/文档/LOXL4/TIMP1_AKI_CKD_project/data/metadata/GSE267242_cell_metadata.csv","Patient-level analysis was not attempted.","2026-06-12 23:14:04"
+"singlecell_validation","GSE210622","independent donors","Only GSM6433706 is represented in the current object.","Retained existing cell-level results as exploratory evidence only.","2026-06-12 23:14:04"
+"module_enrichment","MSigDB","C5:GO:BP","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Skipped unavailable enrichment database and continued.","2026-06-12 23:22:15"
+"module_enrichment","MSigDB","C2:CP:REACTOME","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Skipped unavailable enrichment database and continued.","2026-06-12 23:22:15"
+"module_enrichment","MSigDB","C2:CP:KEGG_MEDICUS","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Skipped unavailable enrichment database and continued.","2026-06-12 23:22:16"
+"module_enrichment","MSigDB","C5:GO:BP","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Skipped unavailable enrichment database and continued.","2026-06-12 23:23:39"
+"module_enrichment","MSigDB","C2:CP:REACTOME","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Skipped unavailable enrichment database and continued.","2026-06-12 23:23:39"
+"module_enrichment","MSigDB","C2:CP:KEGG_MEDICUS","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Skipped unavailable enrichment database and continued.","2026-06-12 23:23:39"
+"module_enrichment","MSigDB","C5:GO:BP","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Skipped unavailable enrichment database and continued.","2026-06-12 23:24:59"
+"module_enrichment","MSigDB","C2:CP:REACTOME","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Skipped unavailable enrichment database and continued.","2026-06-12 23:24:59"
+"module_enrichment","MSigDB","C2:CP:KEGG_MEDICUS","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Skipped unavailable enrichment database and continued.","2026-06-12 23:24:59"
+"comprehensive_module_enrichment","MSigDB","Hallmark","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Recorded network/database failure; used curated offline subset.","2026-06-12 23:40:01"
+"comprehensive_module_enrichment","MSigDB","GO_BP","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Recorded network/database failure; used curated offline subset.","2026-06-12 23:40:01"
+"comprehensive_module_enrichment","MSigDB","GO_CC","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Recorded network/database failure; used curated offline subset.","2026-06-12 23:40:01"
+"comprehensive_module_enrichment","MSigDB","Reactome","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Recorded network/database failure; used curated offline subset.","2026-06-12 23:40:01"
+"comprehensive_module_enrichment","MSigDB","KEGG","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Recorded network/database failure; used curated offline subset.","2026-06-12 23:40:01"
+"comprehensive_enrichment_v3","TIMP1_modules","package installation clusterProfiler; ReactomePA; org.Hs.eg.db; AnnotationDbi","Bioconductor version cannot be validated; no internet connection?  See
+  #troubleshooting section in vignette","Installation failure recorded; available methods continued.","2026-06-12 23:56:46"
+"comprehensive_enrichment_v3","TIMP1_modules","clusterProfiler","Package is unavailable after the installation attempt.","Analyses requiring this package were skipped.","2026-06-12 23:56:46"
+"comprehensive_enrichment_v3","TIMP1_modules","ReactomePA","Package is unavailable after the installation attempt.","Analyses requiring this package were skipped.","2026-06-12 23:56:46"
+"comprehensive_enrichment_v3","TIMP1_modules","org.Hs.eg.db","Package is unavailable after the installation attempt.","Analyses requiring this package were skipped.","2026-06-12 23:56:46"
+"comprehensive_enrichment_v3","TIMP1_modules","AnnotationDbi","Package is unavailable after the installation attempt.","Analyses requiring this package were skipped.","2026-06-12 23:56:46"
+"comprehensive_enrichment_v3","TIMP1_modules","msigdbr Hallmark","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Collection retrieval failed; no result was claimed.","2026-06-12 23:56:47"
+"comprehensive_enrichment_v3","TIMP1_modules","msigdbr GO_BP","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Collection retrieval failed; no result was claimed.","2026-06-12 23:56:47"
+"comprehensive_enrichment_v3","TIMP1_modules","msigdbr GO_CC","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Collection retrieval failed; no result was claimed.","2026-06-12 23:56:47"
+"comprehensive_enrichment_v3","TIMP1_modules","msigdbr Reactome","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Collection retrieval failed; no result was claimed.","2026-06-12 23:56:47"
+"comprehensive_enrichment_v3","TIMP1_modules","msigdbr KEGG","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Collection retrieval failed; no result was claimed.","2026-06-12 23:56:47"
+"comprehensive_enrichment_v3","TIMP1_modules","clusterProfiler","Package is unavailable after the installation attempt.","Analyses requiring this package were skipped.","2026-06-13 00:03:32"
+"comprehensive_enrichment_v3","TIMP1_modules","ReactomePA","Package is unavailable after the installation attempt.","Analyses requiring this package were skipped.","2026-06-13 00:03:32"
+"comprehensive_enrichment_v3","TIMP1_modules","org.Hs.eg.db","Package is unavailable after the installation attempt.","Analyses requiring this package were skipped.","2026-06-13 00:03:32"
+"comprehensive_enrichment_v3","TIMP1_modules","msigdbr Hallmark","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Collection retrieval failed; no result was claimed.","2026-06-13 00:03:33"
+"comprehensive_enrichment_v3","TIMP1_modules","msigdbr GO_BP","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Collection retrieval failed; no result was claimed.","2026-06-13 00:03:33"
+"comprehensive_enrichment_v3","TIMP1_modules","msigdbr GO_CC","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Collection retrieval failed; no result was claimed.","2026-06-13 00:03:33"
+"comprehensive_enrichment_v3","TIMP1_modules","msigdbr Reactome","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Collection retrieval failed; no result was claimed.","2026-06-13 00:03:33"
+"comprehensive_enrichment_v3","TIMP1_modules","msigdbr KEGG","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Collection retrieval failed; no result was claimed.","2026-06-13 00:03:33"
+"comprehensive_enrichment_v3","TIMP1_modules","clusterProfiler","Package is unavailable after the installation attempt.","Analyses requiring this package were skipped.","2026-06-13 00:19:56"
+"comprehensive_enrichment_v3","TIMP1_modules","ReactomePA","Package is unavailable after the installation attempt.","Analyses requiring this package were skipped.","2026-06-13 00:19:56"
+"comprehensive_enrichment_v3","TIMP1_modules","org.Hs.eg.db","Package is unavailable after the installation attempt.","Analyses requiring this package were skipped.","2026-06-13 00:19:56"
+"comprehensive_enrichment_v3","TIMP1_modules","msigdbr Hallmark","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Collection retrieval failed; no result was claimed.","2026-06-13 00:19:56"
+"comprehensive_enrichment_v3","TIMP1_modules","msigdbr GO_BP","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Collection retrieval failed; no result was claimed.","2026-06-13 00:19:56"
+"comprehensive_enrichment_v3","TIMP1_modules","msigdbr GO_CC","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Collection retrieval failed; no result was claimed.","2026-06-13 00:19:56"
+"comprehensive_enrichment_v3","TIMP1_modules","msigdbr Reactome","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Collection retrieval failed; no result was claimed.","2026-06-13 00:19:56"
+"comprehensive_enrichment_v3","TIMP1_modules","msigdbr KEGG","Could not resolve hostname [zenodo.org]:
+Could not resolve host: zenodo.org","Collection retrieval failed; no result was claimed.","2026-06-13 00:19:56"
