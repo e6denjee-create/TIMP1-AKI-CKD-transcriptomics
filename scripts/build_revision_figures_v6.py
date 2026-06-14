@@ -19,7 +19,7 @@ FIGURES = ROOT / "figures" / "timp1_validation"
 
 def save_figure(fig: plt.Figure, stem: str) -> None:
     for suffix in ("png", "pdf"):
-        fig.savefig(FIGURES / f"{stem}.{suffix}", dpi=300, bbox_inches="tight")
+        fig.savefig(FIGURES / f"{stem}.{suffix}", dpi=600, bbox_inches="tight")
     plt.close(fig)
 
 

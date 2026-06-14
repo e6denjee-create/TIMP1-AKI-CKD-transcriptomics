@@ -1,3 +1,0 @@
-"dataset","metadata_available","cells","donor_column","donor_count","sample_column","sample_count","cell_type_column","cell_type_count","patient_level_ready","reason"
-"GSE210622",TRUE,23095,,,"sample",1,"cell_type",9,FALSE,"No explicit donor ID column; Only one donor/sample is represented"
-"GSE267242",FALSE,,,,,,,,FALSE,"Cell metadata is absent."

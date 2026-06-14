@@ -53,7 +53,7 @@ ADDRESS = (
     "Shanxi Province 030032, China"
 )
 GITHUB_URL = "https://github.com/e6denjee-create/TIMP1-AKI-CKD-transcriptomics"
-GITHUB_RELEASE_URL = f"{GITHUB_URL}/releases/tag/v1.2.0"
+GITHUB_RELEASE_URL = f"{GITHUB_URL}/releases/tag/v1.1.0"
 ZENODO_DOI = "10.5281/zenodo.20680931"
 ZENODO_DOI_URL = f"https://doi.org/{ZENODO_DOI}"
 
@@ -303,7 +303,7 @@ def build_manuscript() -> None:
         "transcriptomic association study using three discovery cohorts and an independent microdissected "
         "tubular cohort. TIMP1 was directionally elevated in all discovery cohorts and was higher in "
         "GSE180394 disease samples than in living-donor controls (Hedges' g = 1.569, bootstrap 95% CI "
-        "1.103-2.250). Twenty-five of 27 discovery disease-only TIMP1-signature correlations and all nine "
+        "1.110-2.240). Twenty-five of 27 discovery disease-only TIMP1-signature correlations and all nine "
         "external correlations were false-discovery-rate significant. A 421-gene disease-only program score was "
         "externally reproduced with 401 detected genes (rho = 0.850); its correlation exceeded 1,000 "
         "expression- and variability-matched random programs (empirical P = 0.001) and remained positive "
@@ -336,20 +336,25 @@ def build_manuscript() -> None:
         source.paragraphs[22].text: (
             "This study was designed as an integrative transcriptomic association analysis rather than "
             "a systematic review. Candidate public datasets were identified from the project inventory "
-            "and a targeted GEO search completed on 12 June 2026 using combinations of human kidney, "
-            "AKI, CKD, fibrosis, biopsy, tubulointerstitial, and transcriptome terms. Eligibility required "
+            "and a targeted GEO search completed on 14 June 2026 using the exact query: "
+            '(human[Organism]) AND (kidney OR renal) AND (AKI OR "acute kidney injury" OR CKD OR fibrosis) '
+            'AND ("expression profiling by array"[DataSet Type] OR "expression profiling by high throughput '
+            'sequencing"[DataSet Type]). Eligibility required '
             "a processed expression matrix, sample-level disease annotations, an identifiable reference "
             "group, and sufficient TIMP1/signature coverage. Cohorts were analyzed independently without "
             "pooling absolute expression across platforms. Candidate accessions and reasons for inclusion "
-            "or exclusion are reported in Supplementary Table S1 [41-45]."
+            "or exclusion are reported for the focused project candidates in Supplementary Table S1; the "
+            "complete 268-record search-hit inventory is supplied separately for transparency [41-45]."
         ),
         source.paragraphs[23].text: (
             "The discovery analysis included GSE139061, GSE30718, and GSE66494 [41-43]. GSE180394 was "
             "analyzed independently as an external microdissected tubular validation cohort, with 44 "
             "kidney-disease samples and nine healthy living-donor controls as the primary comparison "
             "[44]. Six unaffected tumor-nephrectomy samples were reserved for control sensitivity analyses. "
-            "No single-cell dataset was used as inferential evidence because the locally reproducible "
-            "GSE210622 object represented only one donor, whereas the original study was multi-donor [45]. "
+            "GSE210622 was excluded from all inferential and exploratory manuscript results because the "
+            "locally reconstructed object represented only one donor, whereas the original study was "
+            "multi-donor [45]. The local single-donor files were retained only as historical audit material "
+            "and were not summarized, plotted, tested, or cited as study evidence. "
             "Cohort roles and analytic uses are summarized in Table 1."
         ),
         source.paragraphs[26].text: (
@@ -362,7 +367,7 @@ def build_manuscript() -> None:
             "and exclusions are documented in Supplementary Table S1."
         ),
         source.paragraphs[27].text: source.paragraphs[27].text + " The complete preprocessing manifest, input identifiers, and feature counts are supplied in Supplementary Table S1.",
-        source.paragraphs[29].text: source.paragraphs[29].text + " Nonparametric 95% confidence intervals for Hedges' g were estimated with 2,000 bootstrap resamples using a fixed random seed.",
+        source.paragraphs[29].text: source.paragraphs[29].text + " Hedges' g confidence intervals for every reported expression contrast were estimated using one prespecified procedure: 2,000 stratified nonparametric bootstrap resamples, with disease and control groups resampled independently, percentile 95% intervals, and a recorded deterministic seed for each contrast.",
         source.paragraphs[31].text: (
             "Nine biologically motivated gene sets were frozen before external validation: ECM remodeling, "
             "collagen formation, TGF-beta signaling, inflammation, tubular injury, maladaptive repair, cellular "
@@ -383,14 +388,14 @@ def build_manuscript() -> None:
             "TIMP1 expression was higher in disease samples in all three discovery cohorts when each dataset "
             "was analyzed independently (Figure 2). Mean disease-control differences were 1.086, 1.062, and "
             "0.417 in GSE139061, GSE30718, and GSE66494. Hedges' g values were 0.415 (bootstrap 95% CI "
-            "-0.429 to 1.346), 1.293 (0.732 to 2.120), and 0.449 (0.180 to 0.757), respectively; BH-adjusted "
+            "-0.397 to 1.410), 1.293 (0.704 to 2.080), and 0.449 (0.168 to 0.747), respectively; BH-adjusted "
             "P values were 0.378, 3.26 x 10^-4, and 9.05 x 10^-3. Direction was consistent, but GSE139061 "
             "was imprecise and not statistically significant."
         ),
         source.paragraphs[51].text: (
             "In GSE180394, TIMP1 was higher in 44 disease samples than in nine living-donor controls "
             "(mean difference = 1.318; Hedges' g = 1.569; unadjusted two-sided Wilcoxon P = "
-            "8.01 x 10^-5; bootstrap 95% CI for Hedges' g, 1.103-2.250; Figure 2). This was the "
+            "8.01 x 10^-5; bootstrap 95% CI for Hedges' g, 1.110-2.240; Figure 2). This was the "
             "prespecified primary external expression contrast; no multiplicity-adjusted P value is "
             "reported for this single primary comparison."
         ),
@@ -420,7 +425,23 @@ def build_manuscript() -> None:
         source.paragraphs[69].text: source.paragraphs[69].text.replace("[9]", "[32]"),
         source.paragraphs[71].text: source.paragraphs[71].text + " Comparable compartment-resolved kidney atlases demonstrate the value of validating such programs across epithelial and stromal contexts [22-31].",
         source.paragraphs[72].text: source.paragraphs[72].text + " The leave-one-signature-out injury-PC sensitivity analysis further showed that disease-only restriction does not remove shared pathway severity or cell-composition structure; attenuation after this adjustment is therefore an important limit on TIMP1-specific interpretation.",
-        source.paragraphs[73].text: source.paragraphs[73].text + " Eighth, the compact signatures were literature-informed and partly overlapping rather than independent ontology-derived pathways; their provenance and overlap are explicitly audited. Ninth, leave-one-discovery-cohort analysis showed stable external score correlations but unstable gene membership, so the 421 genes should not be interpreted as a compositionally conserved module. Tenth, the single locally available GSE210622 donor was excluded from inferential analyses rather than treated as patient-level validation.",
+        source.paragraphs[73].text: (
+            "Several limitations merit explicit acknowledgment. First, all cohorts were cross-sectional; "
+            "no dataset followed the same individuals from AKI to CKD, and longitudinal claims are not "
+            "supported. Second, systematic sample-level eGFR, histologic fibrosis, treatment, and outcome "
+            "data were unavailable for covariate adjustment. Third, bulk transcriptomic associations may "
+            "reflect cell-composition shifts as well as within-cell-state changes. Fourth, GSE180394 had "
+            "nine living-donor controls and an etiologically heterogeneous disease group. Fifth, the compact "
+            "signatures were literature-informed and partly overlapping rather than independent ontology-derived "
+            "pathways; their provenance and overlap are audited in Supplementary Table S3. Sixth, complete "
+            "Hallmark, GO, Reactome, and KEGG enrichment could not be computed in the current environment, "
+            "so available enrichment is exploratory. Seventh, leave-one-discovery-cohort analysis showed "
+            "stable external score correlations but unstable gene membership; the 421 genes are not a "
+            "compositionally conserved module. Eighth, GSE210622 was excluded from all inferential and "
+            "exploratory manuscript results because only one donor was locally reconstructed. Finally, no "
+            "protein-level validation, spatial co-localization, longitudinal validation, or experimental "
+            "perturbation was performed."
+        ),
         source.paragraphs[74].text: source.paragraphs[74].text.replace("[10]", "[22-31]"),
         source.paragraphs[76].text: (
             "TIMP1 is directionally elevated across human kidney injury and fibrosis datasets and is associated "
@@ -437,7 +458,11 @@ def build_manuscript() -> None:
 
     extra_after = {
         source.paragraphs[23].text: [
-            "Screened but non-analyzed accessions were excluded for reasons such as absent usable reference samples, incompatible tissue or species, insufficient sample-level annotation, or lack of a locally reproducible processed matrix. These exclusions were made before interpretation of TIMP1 results and are listed individually in Supplementary Table S1."
+            "The complete GEO hit inventory is provided for search transparency, but the search was not "
+            "conducted or reported as a systematic review. Detailed eligibility decisions are provided for "
+            "the focused candidate accessions evaluated in the project workflow. Other search hits are "
+            "identified as not included after title/summary and eligibility screening without implying that "
+            "a PRISMA-style full-text exclusion reason was assigned to every record."
         ],
         source.paragraphs[35].text: [
             "Program-score specificity was evaluated in two additional ways. First, the gene set was re-derived after leaving out each discovery cohort and then scored in GSE180394. Second, 1,000 random gene programs were matched to the observed external program by mean-expression and variability deciles. All external program scores were standardized across the same 53-sample cohort before disease-only correlation. These analyses tested dependence on a single discovery cohort and whether a similarly sized, similarly expressed gene set would show comparable correlation by chance."
@@ -519,10 +544,10 @@ def build_manuscript() -> None:
     doc.add_paragraph(
         "The public transcriptomic datasets are available from the NCBI Gene Expression "
         "Omnibus under accession numbers GSE139061, GSE30718, GSE66494, and GSE180394. "
-        "Analysis code, derived tables, intermediate outputs, "
-        "session information, source data for figures, and publication-quality figures "
-        f"are publicly available at {GITHUB_URL}. The archived version of record is "
-        f"available from Zenodo at {ZENODO_DOI_URL}."
+        "The current public repository and Zenodo concept record contain the previously released "
+        f"analysis snapshot ({GITHUB_URL}; {ZENODO_DOI_URL}). The revised v1.2 analysis package, "
+        "including the unified bootstrap results and current source files, is prepared locally and "
+        "will be released and linked in the final manuscript before journal submission."
     )
     doc.add_heading("Acknowledgments", level=1)
     doc.add_paragraph(
@@ -622,7 +647,7 @@ def build_supplement() -> dict[str, list[tuple[str, pd.DataFrame]]]:
             ["Records returned", "268"],
             [
                 "Screening approach",
-                "Title/summary screening followed by sample-level eligibility assessment; this targeted search was not presented as a systematic review",
+                "Complete hit inventory plus detailed eligibility audit for focused project candidates; not a systematic review and not a PRISMA full-text exclusion log",
             ],
         ],
         columns=["field", "value"],
@@ -643,13 +668,18 @@ def build_supplement() -> dict[str, list[tuple[str, pd.DataFrame]]]:
 
     bulk = pd.read_csv(ROOT / "results/timp1_validation/TIMP1_bulk_validation_statistics.csv")
     external = pd.read_csv(ROOT / "results/timp1_validation/external_GSE180394_TIMP1_group_statistics.csv")
-    controls = pd.read_csv(ROOT / "results/timp1_validation/external_GSE180394_sensitivity_control_statistics.csv")
-    expression_ci = pd.read_csv(ROOT / "results/timp1_validation/TIMP1_expression_effect_size_ci_v5.csv")
+    expression_unified = pd.read_csv(
+        ROOT
+        / "results/timp1_validation/TIMP1_expression_statistics_unified_bootstrap_v7.csv"
+    )
     s2 = [
-        ("Discovery expression statistics", dataframe_with_source(bulk, "TIMP1_bulk_validation_statistics.csv")),
-        ("External expression statistics", dataframe_with_source(external, "external_GSE180394_TIMP1_group_statistics.csv")),
-        ("Alternative control sensitivity", dataframe_with_source(controls, "external_GSE180394_sensitivity_control_statistics.csv")),
-        ("Bootstrap effect-size confidence intervals", dataframe_with_source(expression_ci, "TIMP1_expression_effect_size_ci_v5.csv")),
+        (
+            "Authoritative expression statistics and unified bootstrap confidence intervals",
+            dataframe_with_source(
+                expression_unified,
+                "TIMP1_expression_statistics_unified_bootstrap_v7.csv",
+            ),
+        ),
     ]
 
     gene_sets = pd.read_csv(ROOT / "results/timp1_validation/signature_gene_sets_used.csv")
@@ -702,10 +732,28 @@ def build_supplement() -> dict[str, list[tuple[str, pd.DataFrame]]]:
     robust = pd.read_csv(ROOT / "results/timp1_validation/external_GSE180394_sensitivity_robust_correlations.csv")
     coverage = pd.read_csv(ROOT / "results/timp1_validation/external_GSE180394_input_feature_coverage.csv")
     missing = pd.read_csv(ROOT / "results/timp1_validation/missing_data_log.csv")
+    missing["record_status"] = "Current"
+    historical_singlecell = missing["analysis_step"].eq("singlecell_validation")
+    missing.loc[historical_singlecell, "record_status"] = (
+        "Historical audit; superseded by singlecell_exclusion_policy_v7.csv"
+    )
+    missing.loc[historical_singlecell, "action_taken"] = (
+        "Historical action superseded. Current manuscript policy excludes these "
+        "single-cell inputs from all inferential and exploratory results."
+    )
+    singlecell_policy = pd.read_csv(
+        ROOT / "results/timp1_validation/singlecell_exclusion_policy_v7.csv"
+    )
     s5 = [
         ("Leave-one-diagnosis-out summary", dataframe_with_source(lodo, "external_GSE180394_sensitivity_leave_one_diagnosis_out_summary.csv")),
         ("Diagnosis-adjusted robustness", dataframe_with_source(robust, "external_GSE180394_sensitivity_robust_correlations.csv")),
         ("External feature coverage", dataframe_with_source(coverage, "external_GSE180394_input_feature_coverage.csv")),
+        (
+            "Current single-cell exclusion policy",
+            dataframe_with_source(
+                singlecell_policy, "singlecell_exclusion_policy_v7.csv"
+            ),
+        ),
         ("Missing-data log", dataframe_with_source(missing, "missing_data_log.csv")),
     ]
     sections = {
@@ -811,12 +859,13 @@ def build_cover_letter() -> None:
     doc.add_paragraph(
         "This integrative transcriptomic study evaluates TIMP1 across three discovery kidney "
         "cohorts and an independent microdissected tubular cohort. The work emphasizes "
-        "cross-dataset reproducibility, disease-only pathway associations, a conserved gene "
+        "cross-dataset reproducibility, disease-only pathway associations, a reproducible disease-state "
         "program score, leave-one-discovery-cohort validation, a matched-random-program benchmark, and "
         "robustness to diagnosis, control definitions, and leave-one-signature-out injury-state factors. The manuscript treats "
         "TIMP1 as a candidate injury and extracellular-matrix-remodeling-associated gene and "
-        "does not claim kidney specificity, diagnostic utility, or causality. Attenuation after broad "
-        "injury-PC adjustment and unstable leave-one-cohort gene membership are reported explicitly."
+        "does not claim kidney specificity, diagnostic utility, or causality. Attenuation after "
+        "leave-one-signature-out injury-PC adjustment and unstable leave-one-cohort gene membership "
+        "are reported explicitly."
     )
     doc.add_paragraph(
         "The manuscript is original, is not under consideration elsewhere, and has been approved "
@@ -856,6 +905,42 @@ def build_repository() -> None:
             for stale_path in data_root.rglob("GSE210622*"):
                 if stale_path.is_file():
                     stale_path.unlink()
+
+    # Keep historical single-donor audits in the working project, but exclude them
+    # from the current publication evidence package to prevent status ambiguity.
+    publication_exclusions = [
+        "scripts/*singlecell*",
+        "results/timp1_validation/singlecell*",
+        "results/timp1_validation/manuscript_first_draft*",
+        "results/timp1_validation/manuscript_abstract_options*",
+        "results/timp1_validation/updated_validation_report*",
+        "results/timp1_validation/sessionInfo_singlecell_audit.txt",
+    ]
+    for package_root in [REPO, ZENODO]:
+        for pattern in publication_exclusions:
+            for stale_path in package_root.glob(pattern):
+                if stale_path.is_file():
+                    stale_path.unlink()
+
+        public_log = (
+            package_root
+            / "results/timp1_validation/missing_data_log.csv"
+        )
+        if public_log.exists():
+            public_missing = pd.read_csv(public_log)
+            historical = public_missing["analysis_step"].eq(
+                "singlecell_validation"
+            )
+            public_missing.loc[historical, "action_taken"] = (
+                "Historical audit superseded. Current manuscript policy excludes "
+                "these inputs from all inferential and exploratory results."
+            )
+            public_missing["record_status"] = "Current"
+            public_missing.loc[historical, "record_status"] = (
+                "Historical audit; superseded by "
+                "singlecell_exclusion_policy_v7.csv"
+            )
+            public_missing.to_csv(public_log, index=False, encoding="utf-8-sig")
 
     for folder in ["scripts", "results", "figures", "data"]:
         shutil.copytree(REPO / folder, ZENODO / folder, dirs_exist_ok=True)
@@ -985,10 +1070,11 @@ Authors
 - Correspondence: jiyanzhao@sxbqeh.com.cn
 
 Repository status
-- Public GitHub repository: {GITHUB_URL}
-- GitHub release v1.2.0: {GITHUB_RELEASE_URL}
-- Zenodo DOI: {ZENODO_DOI_URL}
-- The complete local Zenodo payload is under
+- Current public GitHub repository: {GITHUB_URL}
+- Current public GitHub release v1.1.0: {GITHUB_RELEASE_URL}
+- Current Zenodo concept DOI: {ZENODO_DOI_URL}
+- Revised v1.2.0 files are prepared locally but have not yet been pushed or archived.
+- The complete pending local Zenodo payload is under
   public_repository/TIMP1_AKI_CKD_transcriptomics_zenodo_payload.
 """
     (OUT / "README_Submission_Files.txt").write_text(text, encoding="utf-8")
@@ -1014,7 +1100,7 @@ Prepared: 14 June 2026
 
 ## Reproducibility
 
-New validation outputs are under `results/timp1_validation/`; new figures are under `figures/timp1_validation/`. The public repository payload has been refreshed for version 1.2.0.
+New validation outputs are under `results/timp1_validation/`; new figures are under `figures/timp1_validation/`. A local repository payload has been prepared for version 1.2.0, but it has not yet been pushed or archived.
 
 - GitHub: {GITHUB_URL}
 - Zenodo DOI: {ZENODO_DOI_URL}
@@ -1029,7 +1115,7 @@ def copy_figures() -> None:
         "v5_manuscript_figure_3_signature_correlation_heatmap": "Figure_3_TIMP1_Signature_Correlations",
         "v6_manuscript_figure_4_GSE180394_program_score_scatter": "Figure_4_TIMP1_Program_Score_GSE180394",
         "v5_manuscript_figure_5_core_gene_correlation_heatmap": "Figure_5_TIMP1_Core_Gene_Correlations",
-        "v6_module_random_matched_benchmark": "Figure_6_TIMP1_Module_Random_Benchmark",
+        "v6_module_random_matched_benchmark": "Figure_6_TIMP1_Program_Random_Benchmark",
     }
     for source_name, target_name in mapping.items():
         for suffix in [".pdf", ".png"]:
