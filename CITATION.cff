@@ -8,8 +8,8 @@ authors:
     email: jiyanzhao@sxbqeh.com.cn
   - family-names: Gao
     given-names: Zhihong
-version: 1.0.0
-date-released: 2026-06-13
+version: 1.1.0
+date-released: 2026-06-14
 license: MIT
 repository-code: "https://github.com/e6denjee-create/TIMP1-AKI-CKD-transcriptomics"
 doi: "10.5281/zenodo.20680932"

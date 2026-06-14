@@ -29,9 +29,15 @@ from reportlab.platypus import PageBreak, Paragraph, SimpleDocTemplate, Table, T
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_DOCX = Path(r"C:\Users\dell\Downloads\TIMP1_manuscript_submission_ready.docx")
-OUT = ROOT / "submission_package" / "ijms_submission_2026-06-13"
+OUT = ROOT / "submission_package" / "ijms_submission_2026-06-14"
 REPO = ROOT / "public_repository" / "TIMP1_AKI_CKD_transcriptomics"
 ZENODO = ROOT / "public_repository" / "TIMP1_AKI_CKD_transcriptomics_zenodo_payload"
+REFERENCE_LIBRARY = (
+    ROOT
+    / "submission_package"
+    / "ijms_submission_2026-06-13"
+    / "references_verified.csv"
+)
 
 TITLE = (
     "Cross-Cohort Transcriptomic Analysis Associates TIMP1 with Tubular "
@@ -47,7 +53,7 @@ ADDRESS = (
     "Shanxi Province 030032, China"
 )
 GITHUB_URL = "https://github.com/e6denjee-create/TIMP1-AKI-CKD-transcriptomics"
-GITHUB_RELEASE_URL = f"{GITHUB_URL}/releases/tag/v1.0.0"
+GITHUB_RELEASE_URL = f"{GITHUB_URL}/releases/tag/v1.1.0"
 ZENODO_DOI = "10.5281/zenodo.20680932"
 ZENODO_DOI_URL = f"https://doi.org/{ZENODO_DOI}"
 
@@ -98,6 +104,14 @@ CLASSIC_REFERENCES = [
     "Meng, X.M.; Nikolic-Paterson, D.J.; Lan, H.Y. TGF-beta: The Master Regulator of Fibrosis. Nat. Rev. Nephrol. 2016, 12, 325-338. https://doi.org/10.1038/nrneph.2016.48.",
 ]
 
+DATASET_REFERENCES = [
+    "National Center for Biotechnology Information. Gene Expression Omnibus, GSE139061: Transcriptomic Signatures of Kidney Injury in Human Renal Biopsy Specimens. Available online: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE139061 (accessed on 14 June 2026).",
+    "Famulski, K.S.; de Freitas, D.G.; Kreepala, C.; Chang, J.; Sellares, J.; Sis, B.; Einecke, G.; Mengel, M.; Reeve, J.; Halloran, P.F. Molecular Phenotypes of Acute Kidney Injury in Kidney Transplants. J. Am. Soc. Nephrol. 2012, 23, 948-958. https://doi.org/10.1681/ASN.2011090887.",
+    "Nakagawa, S.; Nishihara, K.; Miyata, H.; Shinke, H.; Tomita, E.; Kajiwara, M.; Matsubara, T.; Iehara, N.; Igarashi, Y.; Yamada, H.; et al. Molecular Markers of Tubulointerstitial Fibrosis and Tubular Cell Damage in Patients with Chronic Kidney Disease. PLoS ONE 2015, 10, e0136994. https://doi.org/10.1371/journal.pone.0136994.",
+    "Liu, J.; Nair, V.; Zhao, Y.Y.; Chang, D.Y.; Limonte, C.; Bansal, N.; Fermin, D.; Eichinger, F.; Tanner, E.C.; Bellovich, K.A.; et al. Multi-Scalar Data Integration Links Glomerular Angiopoietin-Tie Signaling Pathway Activation with Progression of Diabetic Kidney Disease. Diabetes 2022, 71, 2664-2676. https://doi.org/10.2337/db22-0169.",
+    "National Center for Biotechnology Information. Gene Expression Omnibus, GSE210622. Available online: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE210622 (accessed on 14 June 2026).",
+]
+
 
 def clean_text(value: object) -> str:
     return str(value).replace("¦Ā", "beta").replace("β", "beta").strip()
@@ -127,7 +141,7 @@ def format_recent_reference(row: pd.Series) -> str:
 
 
 def load_references() -> list[str]:
-    library = pd.read_csv(OUT / "references_verified.csv", dtype={"pmid": str})
+    library = pd.read_csv(REFERENCE_LIBRARY, dtype={"pmid": str})
     by_pmid = library.set_index("pmid")
     refs = list(CLASSIC_REFERENCES[:8])
     ordered_groups = [
@@ -149,6 +163,7 @@ def load_references() -> list[str]:
                 refs.append(CLASSIC_REFERENCES[10])
             elif item in by_pmid.index:
                 refs.append(format_recent_reference(by_pmid.loc[item]))
+    refs.extend(DATASET_REFERENCES)
     return refs
 
 
@@ -197,7 +212,25 @@ def section_paragraphs(source: Document, start: str, end: str | None) -> list[tu
     return items
 
 
-def add_section_content(doc: Document, items: list[tuple[str, str]], citation_updates: dict[str, str]) -> None:
+def add_figure(doc: Document, image_path: Path, caption: str) -> None:
+    paragraph = doc.add_paragraph()
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    paragraph.add_run().add_picture(str(image_path), width=Inches(6.25))
+    legend = doc.add_paragraph(caption)
+    legend.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+    for run in legend.runs:
+        run.font.size = Pt(9)
+
+
+def add_section_content(
+    doc: Document,
+    items: list[tuple[str, str]],
+    citation_updates: dict[str, str],
+    extra_after: dict[str, list[str]] | None = None,
+    figures_after: dict[str, tuple[Path, str]] | None = None,
+) -> None:
+    extra_after = extra_after or {}
+    figures_after = figures_after or {}
     for style, original in items:
         text_value = citation_updates.get(original, original)
         if not text_value.strip():
@@ -221,6 +254,12 @@ def add_section_content(doc: Document, items: list[tuple[str, str]], citation_up
                         ["GSE180394", "External validation", "44 kidney disease", "9 living donors; 6 tumor-nephrectomy sensitivity controls", "Microdissected tubules; Affymetrix", "External validation and robustness"],
                     ],
                 )
+        for extra_text in extra_after.get(original, []):
+            paragraph = doc.add_paragraph(extra_text)
+            paragraph.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+        if original in figures_after:
+            image_path, caption = figures_after[original]
+            add_figure(doc, image_path, caption)
 
 
 def build_manuscript() -> None:
@@ -257,27 +296,22 @@ def build_manuscript() -> None:
     corr.alignment = WD_ALIGN_PARAGRAPH.CENTER
     corr.add_run(f"* Correspondence: jiyanzhao@sxbqeh.com.cn; {ADDRESS}")
 
-    abstract = section_paragraphs(source, "Abstract", "Introduction")
-    abstract_updates = {
-        "Background: Maladaptive repair after kidney injury is accompanied by persistent tubular stress, inflammation, cellular senescence, and extracellular matrix (ECM) remodeling. Tissue inhibitor of metalloproteinases 1 (TIMP1) responds to tissue injury in diverse contexts, but its reproducible transcriptomic context across human kidney disease cohorts has not been systematically defined.": (
-            "Maladaptive repair after kidney injury is accompanied by persistent tubular stress, "
-            "inflammation, cellular senescence, and extracellular matrix (ECM) remodeling. We "
-            "performed an integrative, platform-specific transcriptomic association study using "
-            "three discovery cohorts and an independent microdissected tubular cohort. TIMP1 was "
-            "directionally elevated in all discovery cohorts and was higher in GSE180394 disease "
-            "samples than in living-donor controls. Nine prespecified signatures, calculated after "
-            "excluding TIMP1, showed reproducible positive disease-only correlations with TIMP1. "
-            "A 421-gene stringent disease-only module was externally reproduced, and all 12 core "
-            "genes retained positive external correlations. Leave-one-diagnosis-out, alternative "
-            "control, and diagnosis-adjusted analyses supported robustness. These findings associate "
-            "TIMP1 with tubular injury-repair, ECM remodeling, inflammation, senescence, and fibrosis-"
-            "related programs across human kidney disease cohorts. TIMP1 is nominated as a candidate "
-            "component of a broader maladaptive injury-response state; the cross-sectional design "
-            "does not establish prediction, diagnostic utility, kidney specificity, or causality."
-        ),
-    }
     doc.add_heading("Abstract", level=1)
-    doc.add_paragraph(abstract_updates[next(iter(abstract_updates))])
+    doc.add_paragraph(
+        "Maladaptive repair after kidney injury involves persistent tubular stress, inflammation, "
+        "senescence, and extracellular matrix remodeling. We performed an integrative, platform-specific "
+        "transcriptomic association study using three discovery cohorts and an independent microdissected "
+        "tubular cohort. TIMP1 was directionally elevated in all discovery cohorts and was higher in "
+        "GSE180394 disease samples than in living-donor controls (Hedges' g = 1.569, bootstrap 95% CI "
+        "1.103-2.250). Twenty-five of 27 discovery disease-only TIMP1-signature correlations and all nine "
+        "external correlations were false-discovery-rate significant. A 421-gene disease-only module was "
+        "externally reproduced with 401 detected genes (rho = 0.852); its correlation exceeded 1,000 "
+        "expression- and variability-matched random modules (empirical P = 0.001) and remained positive "
+        "after leaving out each discovery cohort. Adjustment for a broad injury principal component "
+        "attenuated many pathway associations, indicating substantial shared injury-state variance. "
+        "Thus, TIMP1 is associated with a reproducible maladaptive injury-response context, but the "
+        "cross-sectional data do not establish diagnostic utility, kidney specificity, prediction, or causality."
+    )
     doc.add_paragraph(
         "Keywords: TIMP1; acute kidney injury; chronic kidney disease; tubular injury; "
         "maladaptive repair; extracellular matrix remodeling; fibrosis; transcriptomics"
@@ -289,18 +323,134 @@ def build_manuscript() -> None:
         source.paragraphs[17].text: source.paragraphs[17].text + " Recent single-cell and spatial atlases further show that injury-associated epithelial, immune, endothelial, and stromal states are spatially and molecularly heterogeneous [22-31].",
         source.paragraphs[18].text: source.paragraphs[18].text.replace("[9]", "[32,33]") + " Experimental evidence linking TIMP1 expression with kidney fibrosis susceptibility supports investigation of this association while not proving direct causality [33].",
         source.paragraphs[19].text: source.paragraphs[19].text + " The overall validation workflow is summarized in Figure 1.",
-        source.paragraphs[31].text: source.paragraphs[31].text.replace("Supplementary Table S1", "Supplementary Table S3"),
+        source.paragraphs[22].text: (
+            "This study was designed as an integrative transcriptomic association analysis rather than "
+            "a systematic review. Candidate public datasets were identified from the project inventory "
+            "and a targeted GEO search completed on 12 June 2026 using combinations of human kidney, "
+            "AKI, CKD, fibrosis, biopsy, tubulointerstitial, and transcriptome terms. Eligibility required "
+            "a processed expression matrix, sample-level disease annotations, an identifiable reference "
+            "group, and sufficient TIMP1/signature coverage. Cohorts were analyzed independently without "
+            "pooling absolute expression across platforms. Candidate accessions and reasons for inclusion "
+            "or exclusion are reported in Supplementary Table S1 [41-45]."
+        ),
+        source.paragraphs[23].text: (
+            "The discovery analysis included GSE139061, GSE30718, and GSE66494 [41-43]. GSE180394 was "
+            "analyzed independently as an external microdissected tubular validation cohort, with 44 "
+            "kidney-disease samples and nine healthy living-donor controls as the primary comparison "
+            "[44]. Six unaffected tumor-nephrectomy samples were reserved for control sensitivity analyses. "
+            "GSE210622 was used only for exploratory single-donor cellular localization [45]. Cohort roles "
+            "and analytic uses are summarized in Table 1."
+        ),
+        source.paragraphs[26].text: (
+            "Discovery matrices were processed separately. For GSE139061, the processed count matrix was "
+            "transformed as log2(x + 1), quantile-normalized, mapped to gene symbols, and duplicate symbols "
+            "were averaged. GSE30718 and GSE66494 series matrices were log2-transformed when required, "
+            "quantile-normalized, annotated with GPL570 and GPL6480, respectively, and duplicate probes "
+            "mapping to the same symbol were averaged. Ambiguous multi-symbol annotations retained the first "
+            "listed symbol. Matrices contained 20,139, 21,755, and 19,553 genes, respectively. Sample labels "
+            "and exclusions are documented in Supplementary Table S1."
+        ),
+        source.paragraphs[27].text: source.paragraphs[27].text + " The complete preprocessing manifest, input identifiers, and feature counts are supplied in Supplementary Table S1.",
+        source.paragraphs[29].text: source.paragraphs[29].text + " Nonparametric 95% confidence intervals for Hedges' g were estimated with 2,000 bootstrap resamples using a fixed random seed.",
+        source.paragraphs[31].text: (
+            "Nine biologically motivated gene sets were frozen before external validation: ECM remodeling, "
+            "collagen formation, TGF-beta signaling, inflammation, tubular injury, maladaptive repair, cellular "
+            "senescence, fibrosis, and immune activation. They were compact literature-informed analysis sets, "
+            "not unmodified database exports. The biological rationale, provenance category, version date, full "
+            "membership, and overlap audit are provided in Supplementary Table S3. Within each dataset, per-gene "
+            "expression was standardized across samples and signature scores were the mean of available genes. "
+            "At least two genes were required, and TIMP1 was excluded to prevent self-correlation."
+        ),
+        source.paragraphs[33].text: source.paragraphs[33].text + " Spearman rho confidence intervals were estimated with 2,000 bootstrap resamples. Signature intercorrelations were quantified to make biological redundancy explicit.",
+        source.paragraphs[35].text: source.paragraphs[35].text + " TIMP1 itself was excluded from module membership.",
+        source.paragraphs[39].text: source.paragraphs[39].text.replace("399 of 421", "401 of 421"),
+        source.paragraphs[43].text: source.paragraphs[43].text + " To evaluate shared injury-state confounding, disease-only signature values and TIMP1 were additionally residualized against the first principal component of all nine signatures before partial Spearman testing.",
+        source.paragraphs[47].text: source.paragraphs[47].text + " Bootstrap analyses used 2,000 resamples; the matched-random-module benchmark used 1,000 repeats matched by mean-expression and variability deciles. Random seeds are recorded in the analysis script.",
+        source.paragraphs[50].text: (
+            "TIMP1 expression was higher in disease samples in all three discovery cohorts when each dataset "
+            "was analyzed independently (Figure 2). Mean disease-control differences were 1.086, 1.062, and "
+            "0.417 in GSE139061, GSE30718, and GSE66494. Hedges' g values were 0.415 (bootstrap 95% CI "
+            "-0.429 to 1.346), 1.293 (0.732 to 2.120), and 0.449 (0.180 to 0.757), respectively; BH-adjusted "
+            "P values were 0.378, 3.26 x 10^-4, and 9.05 x 10^-3. Direction was consistent, but GSE139061 "
+            "was imprecise and not statistically significant."
+        ),
+        source.paragraphs[51].text: source.paragraphs[51].text.replace("Figure 2).", "bootstrap 95% CI for Hedges' g, 1.103-2.250; Figure 2)."),
+        source.paragraphs[53].text: source.paragraphs[53].text + " Bootstrap confidence intervals and exact adjusted P values are reported in Supplementary Table S3.",
+        source.paragraphs[54].text: source.paragraphs[54].text + " All bootstrap rho confidence intervals remained positive.",
+        source.paragraphs[57].text: (
+            "In GSE180394, 401 of 421 stringent genes were detected. The module score correlated with TIMP1 "
+            "at rho = 0.880 across all samples and rho = 0.852 among disease samples (Figure 4). The observed "
+            "disease-only correlation exceeded 1,000 random modules matched on gene-level mean expression and "
+            "variability (random mean rho = 0.161; 95th percentile = 0.441; empirical P = 0.001; Figure 6)."
+        ),
+        source.paragraphs[63].text: source.paragraphs[63].text + " In contrast, adjustment for the broad injury principal component substantially attenuated many signature associations; none of the nine external adjusted tests reached FDR < 0.05. This indicates that much of the observed co-variation is shared with a general injury-state axis rather than representing an independent TIMP1-specific pathway relationship.",
+        source.paragraphs[67].text: source.paragraphs[67].text.replace("A disease-only correlation module of 421 genes was identified in discovery analyses and externally reproduced", "A disease-only correlation module of 421 genes was identified in discovery analyses, exceeded matched random modules, and was externally reproduced"),
         source.paragraphs[68].text: source.paragraphs[68].text.replace("[1-4]", "[1-4,9-21]").replace("[6,7]", "[6,7,15-21]"),
         source.paragraphs[69].text: source.paragraphs[69].text.replace("[9]", "[32-40]"),
         source.paragraphs[71].text: source.paragraphs[71].text + " Comparable compartment-resolved kidney atlases demonstrate the value of validating such programs across epithelial and stromal contexts [22-31].",
+        source.paragraphs[72].text: source.paragraphs[72].text + " The broad-injury-factor sensitivity analysis further showed that disease-only restriction does not remove shared pathway severity or cell-composition structure; attenuation after this adjustment is therefore an important limit on TIMP1-specific interpretation.",
+        source.paragraphs[73].text: source.paragraphs[73].text + " Eighth, the compact signatures were literature-informed and partly overlapping rather than independent ontology-derived pathways; their provenance and overlap are now explicitly audited.",
         source.paragraphs[74].text: source.paragraphs[74].text.replace("[10]", "[22-31]"),
+        source.paragraphs[76].text: (
+            "TIMP1 is directionally elevated across human kidney injury and fibrosis datasets and is associated "
+            "with tubular injury-repair, ECM remodeling, inflammatory activation, senescence, fibrosis-related "
+            "programs, and a conserved disease-only transcriptomic module. External tubular validation, "
+            "leave-one-cohort analysis, and a matched-random-module benchmark strengthen the association-based "
+            "evidence. However, attenuation after broad injury-factor adjustment supports a conservative "
+            "interpretation: TIMP1 is a candidate component or readout of a wider maladaptive repair and wound-"
+            "response state. Longitudinal, spatial, protein-level, and perturbation studies are required before "
+            "claims regarding prediction, diagnostic performance, kidney specificity, or causality."
+        ),
     }
 
-    add_section_content(doc, section_paragraphs(source, "Introduction", "Methods"), citation_updates)
-    add_section_content(doc, section_paragraphs(source, "Results", "Discussion"), citation_updates)
-    add_section_content(doc, section_paragraphs(source, "Discussion", "Conclusions"), citation_updates)
-    add_section_content(doc, section_paragraphs(source, "Methods", "Results"), citation_updates)
-    add_section_content(doc, section_paragraphs(source, "Conclusions", "Declarations"), citation_updates)
+    extra_after = {
+        source.paragraphs[23].text: [
+            "Screened but non-analyzed accessions were excluded for reasons such as absent usable reference samples, incompatible tissue or species, insufficient sample-level annotation, or lack of a locally reproducible processed matrix. These exclusions were made before interpretation of TIMP1 results and are listed individually in Supplementary Table S1."
+        ],
+        source.paragraphs[35].text: [
+            "Module specificity was evaluated in two additional ways. First, the module was re-derived after leaving out each discovery cohort and then scored in GSE180394. Second, 1,000 random gene modules were matched to the observed external module by mean-expression and variability deciles. These analyses tested dependence on a single discovery cohort and whether a similarly sized, similarly expressed gene set would show comparable correlation by chance."
+        ],
+        source.paragraphs[57].text: [
+            "Leave-one-discovery-cohort-out modules remained positively associated with TIMP1 in GSE180394: rho = 0.855 after omitting GSE139061, 0.857 after omitting GSE30718, and 0.797 after omitting GSE66494. Module sizes differed substantially (13-403 genes), but all external correlations remained FDR-significant."
+        ],
+        source.paragraphs[72].text: [
+            "A shared-injury or cell-composition explanation remains plausible. TIMP1 and the nine signatures can rise together because samples contain different proportions of injured epithelium, inflammatory cells, activated stroma, or globally more severe tissue damage. The marked attenuation after broad injury-factor adjustment supports this explanation and argues against treating each correlation as an independent TIMP1-linked mechanism."
+        ],
+    }
+    figures_after = {
+        source.paragraphs[19].text: (
+            ROOT / "figures/timp1_validation/v4_manuscript_figure_1_workflow_cohort_overview.png",
+            "Figure 1. Study workflow and cohort roles. Discovery cohorts were analyzed independently, followed by external tubular validation and prespecified robustness analyses."
+        ),
+        source.paragraphs[51].text: (
+            ROOT / "figures/timp1_validation/v5_manuscript_figure_2_TIMP1_expression_cohorts.png",
+            "Figure 2. TIMP1 expression across discovery and external cohorts. Points show samples; boxes summarize group distributions. Exact statistics and bootstrap confidence intervals are in Supplementary Table S2."
+        ),
+        source.paragraphs[54].text: (
+            ROOT / "figures/timp1_validation/v5_manuscript_figure_3_signature_correlation_heatmap.png",
+            "Figure 3. Spearman correlations between TIMP1 and nine prespecified signatures. TIMP1 was excluded from signature scores. Stars denote BH-adjusted significance."
+        ),
+        source.paragraphs[57].text: (
+            ROOT / "figures/timp1_validation/v4_manuscript_figure_4_GSE180394_stringent_module_scatter.png",
+            "Figure 4. External validation of the stringent discovery module in GSE180394. The score used 401 detected module genes."
+        ),
+        source.paragraphs[59].text: (
+            ROOT / "figures/timp1_validation/v5_manuscript_figure_5_core_gene_correlation_heatmap.png",
+            "Figure 5. External disease-only correlations between TIMP1 and the 12 cross-cohort core genes. Stars denote BH-adjusted significance."
+        ),
+        source.paragraphs[57].text + "__random": (
+            ROOT / "figures/timp1_validation/v5_module_random_matched_benchmark.png",
+            "Figure 6. Matched-random-module benchmark. The observed GSE180394 disease-only module correlation is compared with 1,000 modules matched by mean expression and variability."
+        ),
+    }
+    random_figure = figures_after.pop(source.paragraphs[57].text + "__random")
+
+    add_section_content(doc, section_paragraphs(source, "Introduction", "Methods"), citation_updates, extra_after, figures_after)
+    add_section_content(doc, section_paragraphs(source, "Results", "Discussion"), citation_updates, extra_after, figures_after)
+    add_figure(doc, *random_figure)
+    add_section_content(doc, section_paragraphs(source, "Discussion", "Conclusions"), citation_updates, extra_after, figures_after)
+    add_section_content(doc, section_paragraphs(source, "Methods", "Results"), citation_updates, extra_after, figures_after)
+    add_section_content(doc, section_paragraphs(source, "Conclusions", "Declarations"), citation_updates, extra_after, figures_after)
 
     doc.add_heading("Supplementary Materials", level=1)
     doc.add_paragraph(
@@ -321,7 +471,9 @@ def build_manuscript() -> None:
     doc.add_heading("Funding", level=1)
     doc.add_paragraph(
         "This research was supported by the Fundamental Research Program of Shanxi Province "
-        "(No. 202403021222407) and the Shanxi Bethune Hospital Project (No. 2023RC06)."
+        "(No. 202403021222407) and the Shanxi Bethune Hospital Project (No. 2023RC06). "
+        "The funders had no role in study design, data collection, analysis, interpretation, "
+        "manuscript preparation, or the decision to submit the work."
     )
     doc.add_heading("Institutional Review Board Statement", level=1)
     doc.add_paragraph(
@@ -335,7 +487,7 @@ def build_manuscript() -> None:
     doc.add_paragraph(
         "The public transcriptomic datasets are available from the NCBI Gene Expression "
         "Omnibus under accession numbers GSE139061, GSE30718, GSE66494, GSE180394, "
-        "GSE210622, and GSE267242. Analysis code, derived tables, intermediate outputs, "
+        "and GSE210622. Analysis code, derived tables, intermediate outputs, "
         "session information, source data for figures, and publication-quality figures "
         f"are publicly available at {GITHUB_URL}. The archived version of record is "
         f"available from Zenodo at {ZENODO_DOI_URL}."
@@ -347,6 +499,12 @@ def build_manuscript() -> None:
     )
     doc.add_heading("Conflicts of Interest", level=1)
     doc.add_paragraph("The authors declare no conflict of interest.")
+    doc.add_heading("Use of Artificial Intelligence", level=1)
+    doc.add_paragraph(
+        "Generative artificial intelligence tools were used for language editing and coding assistance. "
+        "The authors reviewed the analysis logic, verified the cited literature and numerical results "
+        "against the underlying outputs, and take full responsibility for the manuscript."
+    )
 
     doc.add_heading("References", level=1)
     for index, reference in enumerate(refs, start=1):
@@ -354,10 +512,6 @@ def build_manuscript() -> None:
         paragraph.paragraph_format.first_line_indent = Inches(-0.2)
         paragraph.paragraph_format.left_indent = Inches(0.2)
         paragraph.paragraph_format.space_after = Pt(3)
-
-    doc.add_heading("Figure Legends", level=1)
-    for paragraph in source.paragraphs[107:112]:
-        doc.add_paragraph(paragraph.text)
 
     footer = doc.sections[0].footer.paragraphs[0]
     footer.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -368,6 +522,20 @@ def build_manuscript() -> None:
 def dataframe_with_source(df: pd.DataFrame, source: str) -> pd.DataFrame:
     output = df.copy()
     output.insert(0, "source_file", source)
+    return output
+
+
+def format_statistical_zeros(frame: pd.DataFrame) -> pd.DataFrame:
+    output = frame.copy()
+    for column in output.columns:
+        name = str(column).lower()
+        is_p_value = any(token in name for token in ["p_value", "pvalue", "p_adj", "padj", "fdr"])
+        if is_p_value:
+            output[column] = output[column].map(
+                lambda value: "<2.2e-16"
+                if isinstance(value, (int, float)) and not pd.isna(value) and value == 0
+                else value
+            )
     return output
 
 
@@ -382,35 +550,76 @@ def build_supplement() -> dict[str, list[tuple[str, pd.DataFrame]]]:
         ],
         columns=["dataset", "role", "disease_samples", "control_samples", "tissue_platform", "analytic_use"],
     )
-    s1 = [("Cohort characteristics", cohorts)]
+    screening = pd.DataFrame(
+        [
+            ["GSE139061", "Included", "Discovery bulk cohort", "Processed matrix, disease labels, reference nephrectomy samples, and required gene coverage available"],
+            ["GSE30718", "Included", "Discovery bulk cohort", "Processed matrix, transplant injury labels, control samples, and platform annotation available"],
+            ["GSE66494", "Included", "Discovery bulk cohort", "Processed matrix, CKD/fibrosis labels, controls, and platform annotation available"],
+            ["GSE180394", "Included", "External tubular validation", "Independent microdissected tubule cohort with living-donor and sensitivity controls"],
+            ["GSE210622", "Exploratory only", "Single-cell localization", "Only one locally available AKI donor; not used for patient-level inference"],
+            ["GSE133288", "Excluded", "Screened candidate", "No locally reproducible processed matrix and matched annotation meeting the predefined workflow requirements"],
+            ["GSE267242", "Excluded", "Screened candidate", "Available files and study context did not meet the predefined human kidney cohort requirements for this analysis"],
+        ],
+        columns=["accession", "decision", "role", "reason"],
+    )
+    preprocessing = pd.DataFrame(
+        [
+            ["GSE139061", "Processed count matrix", "log2(x + 1); quantile normalization", "Gene symbols; duplicate symbols averaged", 20139],
+            ["GSE30718", "GEO series matrix", "Conditional log2; quantile normalization", "GPL570; first symbol for ambiguous probes; duplicates averaged", 21755],
+            ["GSE66494", "GEO series matrix", "Conditional log2; quantile normalization", "GPL6480; first symbol for ambiguous probes; duplicates averaged", 19553],
+            ["GSE180394", "Processed GEO expression object", "As supplied; analyzed separately", "GPL19983/NCBI gene_info; duplicate symbols averaged", 24845],
+        ],
+        columns=["dataset", "input", "transformation", "annotation_and_collapse", "final_gene_count"],
+    )
+    s1 = [
+        ("Cohort characteristics", cohorts),
+        ("Candidate dataset screening audit", screening),
+        ("Preprocessing manifest", preprocessing),
+    ]
 
     bulk = pd.read_csv(ROOT / "results/timp1_validation/TIMP1_bulk_validation_statistics.csv")
     external = pd.read_csv(ROOT / "results/timp1_validation/external_GSE180394_TIMP1_group_statistics.csv")
     controls = pd.read_csv(ROOT / "results/timp1_validation/external_GSE180394_sensitivity_control_statistics.csv")
+    expression_ci = pd.read_csv(ROOT / "results/timp1_validation/TIMP1_expression_effect_size_ci_v5.csv")
     s2 = [
         ("Discovery expression statistics", dataframe_with_source(bulk, "TIMP1_bulk_validation_statistics.csv")),
         ("External expression statistics", dataframe_with_source(external, "external_GSE180394_TIMP1_group_statistics.csv")),
         ("Alternative control sensitivity", dataframe_with_source(controls, "external_GSE180394_sensitivity_control_statistics.csv")),
+        ("Bootstrap effect-size confidence intervals", dataframe_with_source(expression_ci, "TIMP1_expression_effect_size_ci_v5.csv")),
     ]
 
     gene_sets = pd.read_csv(ROOT / "results/timp1_validation/signature_gene_sets_used.csv")
     correlations = pd.read_csv(ROOT / "results/timp1_validation/TIMP1_signature_correlations.csv")
     external_corr = pd.read_csv(ROOT / "results/timp1_validation/external_GSE180394_signature_correlations.csv")
+    signature_provenance = pd.read_csv(ROOT / "results/timp1_validation/signature_provenance_v5.csv")
+    overlap = pd.read_csv(ROOT / "results/timp1_validation/signature_overlap_audit_v5.csv")
+    intercorrelations = pd.read_csv(ROOT / "results/timp1_validation/signature_intercorrelations_disease_only_v5.csv")
+    correlation_ci = pd.read_csv(ROOT / "results/timp1_validation/TIMP1_signature_correlation_ci_v5.csv")
+    broad_adjustment = pd.read_csv(ROOT / "results/timp1_validation/signature_broad_injury_factor_adjustment_v5.csv")
     s3 = [
+        ("Signature provenance", dataframe_with_source(signature_provenance, "signature_provenance_v5.csv")),
         ("Prespecified signature membership", dataframe_with_source(gene_sets, "signature_gene_sets_used.csv")),
+        ("Signature overlap audit", dataframe_with_source(overlap, "signature_overlap_audit_v5.csv")),
+        ("Disease-only signature intercorrelations", dataframe_with_source(intercorrelations, "signature_intercorrelations_disease_only_v5.csv")),
         ("Discovery correlations", dataframe_with_source(correlations, "TIMP1_signature_correlations.csv")),
         ("External correlations", dataframe_with_source(external_corr, "external_GSE180394_signature_correlations.csv")),
+        ("Bootstrap correlation confidence intervals", dataframe_with_source(correlation_ci, "TIMP1_signature_correlation_ci_v5.csv")),
+        ("Broad injury-factor adjustment", dataframe_with_source(broad_adjustment, "signature_broad_injury_factor_adjustment_v5.csv")),
     ]
 
     core = pd.read_csv(ROOT / "results/timp1_validation/core_module_genes_summary.csv")
     stringent = pd.read_csv(ROOT / "results/timp1_validation/stringent_TIMP1_correlated_module.csv")
     module_external = pd.read_csv(ROOT / "results/timp1_validation/external_GSE180394_stringent_module_correlations.csv")
     core_external = pd.read_csv(ROOT / "results/timp1_validation/external_GSE180394_core_module_correlations.csv")
+    loco = pd.read_csv(ROOT / "results/timp1_validation/module_leave_one_discovery_out_v5.csv")
+    random_benchmark = pd.read_csv(ROOT / "results/timp1_validation/module_random_matched_benchmark_v5.csv")
     s4 = [
         ("Core module summary", dataframe_with_source(core, "core_module_genes_summary.csv")),
         ("Stringent 421-gene module", dataframe_with_source(stringent, "stringent_TIMP1_correlated_module.csv")),
         ("External module validation", dataframe_with_source(module_external, "external_GSE180394_stringent_module_correlations.csv")),
         ("External core-gene validation", dataframe_with_source(core_external, "external_GSE180394_core_module_correlations.csv")),
+        ("Leave-one-discovery-cohort-out validation", dataframe_with_source(loco, "module_leave_one_discovery_out_v5.csv")),
+        ("Matched-random-module benchmark", dataframe_with_source(random_benchmark, "module_random_matched_benchmark_v5.csv")),
     ]
 
     lodo = pd.read_csv(ROOT / "results/timp1_validation/external_GSE180394_sensitivity_leave_one_diagnosis_out_summary.csv")
@@ -438,6 +647,7 @@ def build_supplement() -> dict[str, list[tuple[str, pd.DataFrame]]]:
         sheet.sheet_view.showGridLines = False
         row = 1
         for title, frame in tables:
+            frame = format_statistical_zeros(frame)
             sheet.cell(row=row, column=1, value=title)
             sheet.cell(row=row, column=1).font = Font(bold=True, size=13, color="FFFFFF")
             sheet.cell(row=row, column=1).fill = PatternFill("solid", fgColor="1F4E78")
@@ -480,6 +690,7 @@ def build_supplement() -> dict[str, list[tuple[str, pd.DataFrame]]]:
     for sheet_name, tables in sections.items():
         story.append(Paragraph(sheet_name.replace("_", " "), title_style))
         for table_title, frame in tables:
+            frame = format_statistical_zeros(frame)
             story.append(Paragraph(table_title, styles["Heading2"]))
             display = frame.copy()
             max_rows = 80
@@ -514,7 +725,7 @@ def build_cover_letter() -> None:
     doc = Document()
     doc.styles["Normal"].font.name = "Arial"
     doc.styles["Normal"].font.size = Pt(11)
-    doc.add_paragraph("13 June 2026")
+    doc.add_paragraph("14 June 2026")
     doc.add_paragraph("Editorial Office\nInternational Journal of Molecular Sciences")
     doc.add_paragraph("Dear Editors,")
     doc.add_paragraph(
@@ -525,9 +736,11 @@ def build_cover_letter() -> None:
         "This integrative transcriptomic study evaluates TIMP1 across three discovery kidney "
         "cohorts and an independent microdissected tubular cohort. The work emphasizes "
         "cross-dataset reproducibility, disease-only pathway associations, a conserved gene "
-        "module, and robustness to diagnosis and control definitions. The manuscript treats "
+        "module, leave-one-discovery-cohort validation, a matched-random-module benchmark, and "
+        "robustness to diagnosis, control definitions, and a broad injury-state factor. The manuscript treats "
         "TIMP1 as a candidate injury and extracellular-matrix-remodeling-associated gene and "
-        "does not claim kidney specificity, diagnostic utility, or causality."
+        "does not claim kidney specificity, diagnostic utility, or causality. Attenuation after broad "
+        "injury-factor adjustment is reported explicitly as evidence for a shared injury-state explanation."
     )
     doc.add_paragraph(
         "The manuscript is original, is not under consideration elsewhere, and has been approved "
@@ -602,7 +815,7 @@ is intended for Zenodo because GitHub rejects individual files above 100 MB.
 
 ## Public datasets
 
-NCBI GEO: GSE139061, GSE30718, GSE66494, GSE180394, GSE210622, and GSE267242.
+NCBI GEO: GSE139061, GSE30718, GSE66494, GSE180394, and GSE210622.
 
 ## Reproduction
 
@@ -639,8 +852,8 @@ authors:
     email: jiyanzhao@sxbqeh.com.cn
   - family-names: Gao
     given-names: Zhihong
-version: 1.0.0
-date-released: 2026-06-13
+version: 1.1.0
+date-released: 2026-06-14
 license: MIT
 repository-code: "{GITHUB_URL}"
 doi: "{ZENODO_DOI}"
@@ -677,7 +890,7 @@ doi: "{ZENODO_DOI}"
 
 def build_readme() -> None:
     text = f"""IJMS submission package
-Prepared: 2026-06-13
+Prepared: 2026-06-14
 
 Files
 - TIMP1_IJMS_Manuscript.docx
@@ -685,7 +898,7 @@ Files
 - Supplementary_Tables_S1-S5.xlsx
 - Supplementary_Tables_S1-S5.pdf
 - references_verified.csv
-- Figure_1 to Figure_5 in PDF and PNG formats
+- Figure_1 to Figure_6 in PDF and PNG formats
 
 Authors
 - Yanzhao Ji: first and corresponding author
@@ -695,7 +908,7 @@ Authors
 
 Repository status
 - Public GitHub repository: {GITHUB_URL}
-- GitHub release v1.0.0: {GITHUB_RELEASE_URL}
+- GitHub release v1.1.0: {GITHUB_RELEASE_URL}
 - Zenodo DOI: {ZENODO_DOI_URL}
 - The complete local Zenodo payload is under
   public_repository/TIMP1_AKI_CKD_transcriptomics_zenodo_payload.
@@ -703,13 +916,41 @@ Repository status
     (OUT / "README_Submission_Files.txt").write_text(text, encoding="utf-8")
 
 
+def build_revision_summary() -> None:
+    text = f"""# Revision summary
+
+Prepared: 14 June 2026
+
+## Major revisions
+
+1. Added five verified primary dataset citations and linked each analyzed GEO accession to its original publication or GEO record.
+2. Added a candidate-dataset screening audit and dataset-specific preprocessing manifest to Supplementary Table S1.
+3. Documented the literature-informed provenance, version date, membership, overlap, and disease-only intercorrelations of all nine signatures.
+4. Added 2,000-resample bootstrap confidence intervals for TIMP1 expression effect sizes and TIMP1-signature correlations.
+5. Added leave-one-discovery-cohort-out validation and a 1,000-repeat expression/variability-matched random-module benchmark.
+6. Added broad injury principal-component adjustment. The attenuation of many associations is reported as evidence that shared injury severity and cell composition remain plausible alternative explanations.
+7. Corrected external stringent-module coverage to 401 of 421 genes based on the actual scoring matrix.
+8. Replaced violin plots with sample-level box plots, added significance marks to heatmaps, embedded six main figures in the manuscript, and supplied all figures as PDF and PNG.
+9. Added funder-role and artificial-intelligence-use statements and removed the non-analyzed GSE267242 accession from the Data Availability Statement.
+
+## Reproducibility
+
+New validation outputs are under `results/timp1_validation/`; new figures are under `figures/timp1_validation/`. The public repository payload has been refreshed for version 1.1.0.
+
+- GitHub: {GITHUB_URL}
+- Zenodo DOI: {ZENODO_DOI_URL}
+"""
+    (OUT / "Revision_Summary.md").write_text(text, encoding="utf-8")
+
+
 def copy_figures() -> None:
     mapping = {
         "v4_manuscript_figure_1_workflow_cohort_overview": "Figure_1_TIMP1_Validation_Workflow",
-        "v4_manuscript_figure_2_TIMP1_expression_cohorts": "Figure_2_TIMP1_Expression_Cohorts",
-        "v4_manuscript_figure_3_signature_correlation_heatmap": "Figure_3_TIMP1_Signature_Correlations",
+        "v5_manuscript_figure_2_TIMP1_expression_cohorts": "Figure_2_TIMP1_Expression_Cohorts",
+        "v5_manuscript_figure_3_signature_correlation_heatmap": "Figure_3_TIMP1_Signature_Correlations",
         "v4_manuscript_figure_4_GSE180394_stringent_module_scatter": "Figure_4_TIMP1_Stringent_Module_GSE180394",
-        "v4_manuscript_figure_5_core_gene_correlation_heatmap": "Figure_5_TIMP1_Core_Gene_Correlations",
+        "v5_manuscript_figure_5_core_gene_correlation_heatmap": "Figure_5_TIMP1_Core_Gene_Correlations",
+        "v5_module_random_matched_benchmark": "Figure_6_TIMP1_Module_Random_Benchmark",
     }
     for source_name, target_name in mapping.items():
         for suffix in [".pdf", ".png"]:
@@ -721,12 +962,14 @@ def copy_figures() -> None:
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(REFERENCE_LIBRARY, OUT / "references_verified.csv")
     build_supplement()
     build_manuscript()
     build_cover_letter()
     copy_figures()
     build_repository()
     build_readme()
+    build_revision_summary()
     print(f"Built IJMS package in {OUT}")
     print(f"Built GitHub package in {REPO}")
     print(f"Built Zenodo payload in {ZENODO}")
