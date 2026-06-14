@@ -20,23 +20,39 @@ causality.
 - `figures/timp1_validation/`: PDF and PNG figure files.
 - `data/processed/`: processed expression matrices small enough for GitHub.
 - `data/metadata/`: sample metadata.
+- `data/external/GSE180394/`: prepared external expression matrices and metadata.
+- `INPUT_MANIFEST.csv`: SHA-256 checksums for every packaged input.
 
 The complete versioned archive is deposited on Zenodo.
 
 ## Archived release
 
-- GitHub release: https://github.com/e6denjee-create/TIMP1-AKI-CKD-transcriptomics/releases/tag/v1.2.0
-- Zenodo DOI: https://doi.org/10.5281/zenodo.20688976
+- GitHub release: https://github.com/e6denjee-create/TIMP1-AKI-CKD-transcriptomics/releases/tag/v1.2.1
+- Zenodo DOI: https://doi.org/10.5281/zenodo.20689824
 
 ## Public datasets
 
 NCBI GEO: GSE139061, GSE30718, GSE66494, and GSE180394.
 
-## Reproduction
+## Clean-room reproduction
 
-R 4.6.0 was used for the principal analyses. Run the scripts in numeric or
-workflow order from the repository root. Package versions are recorded in the
-`sessionInfo*.txt` files under `results/timp1_validation/`.
+R 4.6.0 and Python 3.11 were used. Required R packages are checked by each
+workflow. Optional enrichment is skipped and logged when `msigdbr` or its
+database cache is unavailable. Python figure dependencies are listed in
+`requirements-reproduction.txt`.
+
+From a fresh checkout, run:
+
+```powershell
+python -m pip install -r requirements-reproduction.txt
+python scripts/run_cleanroom_reproduction.py
+```
+
+The runner deletes packaged result and figure copies, rebuilds the core
+discovery, external-validation, robustness, bootstrap, and manuscript-figure
+outputs, then checks prespecified sample counts and numerical invariants. A
+successful run ends with `CLEANROOM_REPRODUCTION_OK`. Package versions are
+recorded in `sessionInfo*.txt` files.
 
 ## Missing data
 

@@ -1,2 +1,2 @@
 "dataset","scope","observed_module_gene_count","observed_rho","random_repetitions","random_rho_mean","random_rho_sd","random_rho_95th_percentile","empirical_one_sided_p","matching_variables"
-"GSE180394","disease_only",401,0.851867512332629,1000,0.160947004933051,0.165207569917278,0.441486962649753,0.000999000999000999,"External-cohort mean-expression decile and variability decile"
+"GSE180394","disease_only",401,0.851867512332629,1000,0.160962649753347,0.164434630649449,0.435870331219168,0.000999000999000999,"External-cohort mean-expression decile and variability decile"

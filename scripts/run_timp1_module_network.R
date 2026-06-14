@@ -9,7 +9,7 @@ ensure_validation_dirs()
 ensure_missing_log()
 set.seed(20260612)
 
-required_packages <- c("ggplot2", "igraph", "msigdbr")
+required_packages <- c("ggplot2", "igraph")
 missing_packages <- required_packages[
   !vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)
 ]
@@ -18,7 +18,7 @@ if (length(missing_packages)) {
 }
 
 datasets <- c("GSE139061", "GSE30718", "GSE66494")
-cache_dir <- file.path(timp1_project_dir(), ".cache", "R")
+cache_dir <- file.path(validation_root(), ".cache", "R")
 dir.create(cache_dir, recursive = TRUE, showWarnings = FALSE)
 Sys.setenv(R_USER_CACHE_DIR = cache_dir)
 
@@ -165,6 +165,15 @@ edges <- data.frame(
 write_validation_csv(edges, "network_edge_list.csv")
 
 get_msigdb_collection <- function(collection, subcollection = NULL) {
+  if (!requireNamespace("msigdbr", quietly = TRUE)) {
+    append_missing_data(
+      "module_enrichment", "MSigDB",
+      paste(collection, subcollection, sep = ":"),
+      "Optional package msigdbr is unavailable.",
+      "Skipped optional enrichment database and continued."
+    )
+    return(NULL)
+  }
   tryCatch(
     {
       if (is.null(subcollection)) {

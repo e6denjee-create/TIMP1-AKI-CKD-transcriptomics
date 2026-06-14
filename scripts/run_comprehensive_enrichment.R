@@ -188,7 +188,7 @@ msig_specs <- list(
 )
 msig_collections <- list()
 if (requireNamespace("msigdbr", quietly = TRUE)) {
-  cache_dir <- file.path(timp1_project_dir(), ".cache", "R")
+  cache_dir <- file.path(validation_root(), ".cache", "R")
   dir.create(cache_dir, recursive = TRUE, showWarnings = FALSE)
   Sys.setenv(R_USER_CACHE_DIR = cache_dir)
   for (database in names(msig_specs)) {

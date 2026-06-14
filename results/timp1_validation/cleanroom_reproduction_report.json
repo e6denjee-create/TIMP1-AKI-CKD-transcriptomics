@@ -1,0 +1,17 @@
+{
+  "status": "CLEANROOM_REPRODUCTION_OK",
+  "completed_at_utc": "2026-06-14T12:34:44.650666+00:00",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python_version": "3.12.13",
+  "repository_root": ".",
+  "input_manifest": "INPUT_MANIFEST.csv",
+  "checks": [
+    "required inputs present and SHA256 hashes matched",
+    "bulk sample counts matched the frozen analysis",
+    "stringent TIMP1 module contained 421 genes",
+    "external GSE180394 effect size and P value matched",
+    "program-score correlation and empirical P value matched",
+    "unified bootstrap interval matched",
+    "required publication figures were generated"
+  ]
+}

@@ -232,7 +232,7 @@ save_validation_plot(
 )
 
 # 2. Alternative control definitions.
-hedges_g_ci <- function(disease, control) {
+hedges_g <- function(disease, control) {
   n1 <- length(disease)
   n0 <- length(control)
   pooled_sd <- sqrt(
@@ -240,9 +240,23 @@ hedges_g_ci <- function(disease, control) {
       (n1 + n0 - 2)
   )
   correction <- 1 - 3 / (4 * (n1 + n0) - 9)
-  g <- correction * (mean(disease) - mean(control)) / pooled_sd
-  se <- sqrt((n1 + n0) / (n1 * n0) + g^2 / (2 * (n1 + n0 - 2)))
-  c(g = g, lower = g - 1.96 * se, upper = g + 1.96 * se)
+  correction * (mean(disease) - mean(control)) / pooled_sd
+}
+
+bootstrap_hedges_g <- function(disease, control, seed, repetitions = 2000L) {
+  set.seed(seed)
+  estimates <- replicate(
+    repetitions,
+    hedges_g(
+      sample(disease, length(disease), replace = TRUE),
+      sample(control, length(control), replace = TRUE)
+    )
+  )
+  c(
+    g = hedges_g(disease, control),
+    lower = unname(quantile(estimates, 0.025, na.rm = TRUE)),
+    upper = unname(quantile(estimates, 0.975, na.rm = TRUE))
+  )
 }
 
 disease_samples <- metadata_all$sample[metadata_all$group == "Disease"]
@@ -255,6 +269,11 @@ control_definitions <- list(
   extended_controls = c(living_samples, tumor_samples),
   tumor_nephrectomy_only = tumor_samples
 )
+bootstrap_seeds <- c(
+  living_donor_only = 20260618L,
+  extended_controls = 20260619L,
+  tumor_nephrectomy_only = 20260620L
+)
 disease_timp1 <- as.numeric(expression_all["TIMP1", disease_samples])
 control_rows <- list()
 control_plot_rows <- list()
@@ -265,7 +284,11 @@ for (definition in names(control_definitions)) {
   test <- suppressWarnings(wilcox.test(
     disease_timp1, control_timp1, exact = FALSE
   ))
-  effect <- hedges_g_ci(disease_timp1, control_timp1)
+  effect <- bootstrap_hedges_g(
+    disease_timp1,
+    control_timp1,
+    bootstrap_seeds[[definition]]
+  )
   control_rows[[control_index]] <- data.frame(
     control_definition = definition,
     n_disease = length(disease_timp1),
@@ -277,6 +300,12 @@ for (definition in names(control_definitions)) {
     hedges_g_ci_lower = effect[["lower"]],
     hedges_g_ci_upper = effect[["upper"]],
     p_value = test$p.value,
+    bootstrap_method = paste(
+      "Stratified nonparametric percentile bootstrap;",
+      "disease and control groups resampled independently"
+    ),
+    bootstrap_repetitions = 2000L,
+    random_seed = bootstrap_seeds[[definition]],
     stringsAsFactors = FALSE
   )
   control_plot_rows[[control_index]] <- rbind(
@@ -292,8 +321,10 @@ for (definition in names(control_definitions)) {
   control_index <- control_index + 1
 }
 control_statistics <- do.call(rbind, control_rows)
-control_statistics$bh_adjusted_p_value <- p.adjust(
-  control_statistics$p_value, "BH"
+control_statistics$bh_adjusted_p_value <- NA_real_
+sensitivity_rows <- control_statistics$control_definition != "living_donor_only"
+control_statistics$bh_adjusted_p_value[sensitivity_rows] <- p.adjust(
+  control_statistics$p_value[sensitivity_rows], "BH"
 )
 control_source <- do.call(rbind, control_plot_rows)
 write_validation_csv(

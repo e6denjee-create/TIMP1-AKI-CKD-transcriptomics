@@ -573,6 +573,12 @@ core_external <- read.csv(
   file.path(result_dir, "external_GSE180394_core_module_correlations.csv"),
   stringsAsFactors = FALSE
 )
+core_external <- core_external[
+  core_external$scope == "disease_only", , drop = FALSE
+]
+if (anyDuplicated(core_external$feature)) {
+  stop("External disease-only core-gene correlations contain duplicate genes.")
+}
 core_long <- rbind(
   data.frame(
     gene = core_summary$gene, dataset = "GSE139061",
@@ -593,6 +599,9 @@ core_long <- rbind(
     significant = core_external$bh_adjusted_p_value < 0.05
   )
 )
+if (anyDuplicated(core_long[, c("gene", "dataset")])) {
+  stop("Core-gene heatmap requires exactly one row per gene and dataset.")
+}
 core_long$dataset <- factor(
   core_long$dataset, levels = c(datasets, "GSE180394")
 )

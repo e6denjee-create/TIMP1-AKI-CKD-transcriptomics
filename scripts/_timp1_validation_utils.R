@@ -4,10 +4,6 @@ validation_root <- function() {
   normalizePath(getwd(), winslash = "/", mustWork = TRUE)
 }
 
-timp1_project_dir <- function(root = validation_root()) {
-  file.path(root, "TIMP1_AKI_CKD_project")
-}
-
 validation_result_dir <- function(root = validation_root()) {
   file.path(root, "results", "timp1_validation")
 }
@@ -17,7 +13,7 @@ validation_figure_dir <- function(root = validation_root()) {
 }
 
 activate_timp1_library <- function(root = validation_root()) {
-  library_dir <- file.path(timp1_project_dir(root), "renv", "library", "R-4.6")
+  library_dir <- file.path(root, "renv", "library", "R-4.6")
   if (dir.exists(library_dir)) .libPaths(c(library_dir, .libPaths()))
   invisible(.libPaths())
 }
@@ -45,6 +41,15 @@ append_missing_data <- function(step, dataset, missing_item, reason,
   )
   if (file.exists(path)) {
     existing <- read.csv(path, check.names = FALSE, stringsAsFactors = FALSE)
+    all_columns <- union(colnames(existing), colnames(row))
+    for (column in setdiff(all_columns, colnames(existing))) {
+      existing[[column]] <- ""
+    }
+    for (column in setdiff(all_columns, colnames(row))) {
+      row[[column]] <- ""
+    }
+    existing <- existing[, all_columns, drop = FALSE]
+    row <- row[, all_columns, drop = FALSE]
     row <- rbind(existing, row)
   }
   write.csv(unique(row), path, row.names = FALSE, na = "")
@@ -71,13 +76,12 @@ ensure_missing_log <- function(root = validation_root()) {
 }
 
 read_validation_bulk <- function(dataset, root = validation_root()) {
-  project <- timp1_project_dir(root)
   expression_path <- file.path(
-    project, "data", "processed",
+    root, "data", "processed",
     paste0(dataset, "_normalized_expression.csv.gz")
   )
   metadata_path <- file.path(
-    project, "data", "metadata", paste0(dataset, "_metadata.csv")
+    root, "data", "metadata", paste0(dataset, "_metadata.csv")
   )
   missing <- c(
     if (!file.exists(expression_path)) expression_path,
