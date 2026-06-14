@@ -1,0 +1,2 @@
+"dataset","scope","observed_module_gene_count","observed_rho","observed_p_value","random_repetitions","random_rho_mean","random_rho_sd","random_rho_95th_percentile","empirical_one_sided_p","matching_variables","scoring_standardization_scope"
+"GSE180394","disease_only",401,0.849612403100775,3.05442841956215e-13,1000,0.191365891472868,0.183084330675713,0.491331923890063,0.000999000999000999,"Mean-expression and variability deciles calculated across all 53 GSE180394 samples","All 53 GSE180394 samples"

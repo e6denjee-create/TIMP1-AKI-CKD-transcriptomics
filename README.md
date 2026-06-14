@@ -3,7 +3,7 @@
 This repository contains the reproducible code, derived tables, intermediate
 outputs, session information, source data, and figures for:
 
-**Cross-Cohort Transcriptomic Analysis Associates TIMP1 with Tubular Injury-Repair, Extracellular Matrix Remodeling, and a Conserved Disease-State Program in Human Kidney Disease**
+**Cross-Cohort Transcriptomic Analysis Associates TIMP1 with Tubular Injury-Repair, Extracellular Matrix Remodeling, and a Reproducible Disease-State Program in Human Kidney Disease**
 
 Authors: Yanzhao Ji and Zhihong Gao.
 
@@ -21,17 +21,16 @@ causality.
 - `data/processed/`: processed expression matrices small enough for GitHub.
 - `data/metadata/`: sample metadata.
 
-The complete archive, including the >100 MB exploratory single-cell RDS object,
-is intended for Zenodo because GitHub rejects individual files above 100 MB.
+The complete versioned archive is deposited on Zenodo.
 
 ## Archived release
 
-- GitHub release: https://github.com/e6denjee-create/TIMP1-AKI-CKD-transcriptomics/releases/tag/v1.1.0
-- Zenodo DOI: https://doi.org/10.5281/zenodo.20686503
+- GitHub release: https://github.com/e6denjee-create/TIMP1-AKI-CKD-transcriptomics/releases/tag/v1.2.0
+- Zenodo DOI: https://doi.org/10.5281/zenodo.20680931
 
 ## Public datasets
 
-NCBI GEO: GSE139061, GSE30718, GSE66494, GSE180394, and GSE210622.
+NCBI GEO: GSE139061, GSE30718, GSE66494, and GSE180394.
 
 ## Reproduction
 

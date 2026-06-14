@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this repository, please cite the archived release."
-title: "Cross-Cohort Transcriptomic Analysis Associates TIMP1 with Tubular Injury-Repair, Extracellular Matrix Remodeling, and a Conserved Disease-State Program in Human Kidney Disease"
+title: "Cross-Cohort Transcriptomic Analysis Associates TIMP1 with Tubular Injury-Repair, Extracellular Matrix Remodeling, and a Reproducible Disease-State Program in Human Kidney Disease"
 type: software
 authors:
   - family-names: Ji
@@ -8,8 +8,8 @@ authors:
     email: jiyanzhao@sxbqeh.com.cn
   - family-names: Gao
     given-names: Zhihong
-version: 1.1.0
+version: 1.2.0
 date-released: 2026-06-14
 license: MIT
 repository-code: "https://github.com/e6denjee-create/TIMP1-AKI-CKD-transcriptomics"
-doi: "10.5281/zenodo.20686503"
+doi: "10.5281/zenodo.20680931"

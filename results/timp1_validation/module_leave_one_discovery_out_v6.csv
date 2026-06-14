@@ -1,0 +1,4 @@
+"left_out_discovery_cohort","retained_discovery_cohorts","selected_gene_count","external_available_gene_count","overlap_with_full_module","jaccard_with_full_module","external_disease_only_rho","p_value","scoring_standardization_scope","bh_adjusted_p_value"
+"GSE139061","GSE30718;GSE66494",403,385,403,0.957244655581948,0.853981677237491,1.71971850402589e-13,"All 53 GSE180394 samples",2.57957775603884e-13
+"GSE30718","GSE139061;GSE66494",13,13,13,0.0308788598574822,0.856800563777308,1.17538734815331e-13,"All 53 GSE180394 samples",2.57957775603884e-13
+"GSE66494","GSE139061;GSE30718",29,27,29,0.0688836104513064,0.789429175475687,1.9186677790622e-10,"All 53 GSE180394 samples",1.9186677790622e-10
