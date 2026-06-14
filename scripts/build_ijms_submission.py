@@ -54,7 +54,7 @@ ADDRESS = (
 )
 GITHUB_URL = "https://github.com/e6denjee-create/TIMP1-AKI-CKD-transcriptomics"
 GITHUB_RELEASE_URL = f"{GITHUB_URL}/releases/tag/v1.1.0"
-ZENODO_DOI = "10.5281/zenodo.20680932"
+ZENODO_DOI = "10.5281/zenodo.20686503"
 ZENODO_DOI_URL = f"https://doi.org/{ZENODO_DOI}"
 
 RECENT_PMIDS = [
@@ -780,7 +780,9 @@ def build_repository() -> None:
     if large_rds.exists():
         target = ZENODO / "data/processed"
         target.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(large_rds, target / large_rds.name)
+        destination = target / large_rds.name
+        if not destination.exists() or destination.stat().st_size != large_rds.stat().st_size:
+            shutil.copy2(large_rds, destination)
 
     readme = f"""# TIMP1 kidney injury transcriptomic analysis
 
