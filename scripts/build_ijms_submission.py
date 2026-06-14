@@ -53,8 +53,8 @@ ADDRESS = (
     "Shanxi Province 030032, China"
 )
 GITHUB_URL = "https://github.com/e6denjee-create/TIMP1-AKI-CKD-transcriptomics"
-GITHUB_RELEASE_URL = f"{GITHUB_URL}/releases/tag/v1.1.0"
-ZENODO_DOI = "10.5281/zenodo.20680931"
+GITHUB_RELEASE_URL = f"{GITHUB_URL}/releases/tag/v1.2.0"
+ZENODO_DOI = "10.5281/zenodo.20688976"
 ZENODO_DOI_URL = f"https://doi.org/{ZENODO_DOI}"
 
 RECENT_PMIDS = [
@@ -544,10 +544,10 @@ def build_manuscript() -> None:
     doc.add_paragraph(
         "The public transcriptomic datasets are available from the NCBI Gene Expression "
         "Omnibus under accession numbers GSE139061, GSE30718, GSE66494, and GSE180394. "
-        "The current public repository and Zenodo concept record contain the previously released "
-        f"analysis snapshot ({GITHUB_URL}; {ZENODO_DOI_URL}). The revised v1.2 analysis package, "
-        "including the unified bootstrap results and current source files, is prepared locally and "
-        "will be released and linked in the final manuscript before journal submission."
+        "Analysis code, derived tables, intermediate outputs, session information, source data for "
+        f"figures, and publication-quality figures are available from GitHub ({GITHUB_URL}; "
+        f"release v1.2.0: {GITHUB_RELEASE_URL}). The archived version of record is available from "
+        f"Zenodo at {ZENODO_DOI_URL}."
     )
     doc.add_heading("Acknowledgments", level=1)
     doc.add_paragraph(
@@ -1070,11 +1070,10 @@ Authors
 - Correspondence: jiyanzhao@sxbqeh.com.cn
 
 Repository status
-- Current public GitHub repository: {GITHUB_URL}
-- Current public GitHub release v1.1.0: {GITHUB_RELEASE_URL}
-- Current Zenodo concept DOI: {ZENODO_DOI_URL}
-- Revised v1.2.0 files are prepared locally but have not yet been pushed or archived.
-- The complete pending local Zenodo payload is under
+- Public GitHub repository: {GITHUB_URL}
+- Public GitHub release v1.2.0: {GITHUB_RELEASE_URL}
+- Zenodo v1.2.0 DOI: {ZENODO_DOI_URL}
+- The complete local Zenodo payload is under
   public_repository/TIMP1_AKI_CKD_transcriptomics_zenodo_payload.
 """
     (OUT / "README_Submission_Files.txt").write_text(text, encoding="utf-8")
@@ -1100,7 +1099,7 @@ Prepared: 14 June 2026
 
 ## Reproducibility
 
-New validation outputs are under `results/timp1_validation/`; new figures are under `figures/timp1_validation/`. A local repository payload has been prepared for version 1.2.0, but it has not yet been pushed or archived.
+New validation outputs are under `results/timp1_validation/`; new figures are under `figures/timp1_validation/`. The public repository and Zenodo archive have been released as version 1.2.0.
 
 - GitHub: {GITHUB_URL}
 - Zenodo DOI: {ZENODO_DOI_URL}

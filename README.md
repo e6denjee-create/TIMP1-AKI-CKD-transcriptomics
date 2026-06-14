@@ -25,8 +25,8 @@ The complete versioned archive is deposited on Zenodo.
 
 ## Archived release
 
-- GitHub release: https://github.com/e6denjee-create/TIMP1-AKI-CKD-transcriptomics/releases/tag/v1.1.0
-- Zenodo DOI: https://doi.org/10.5281/zenodo.20680931
+- GitHub release: https://github.com/e6denjee-create/TIMP1-AKI-CKD-transcriptomics/releases/tag/v1.2.0
+- Zenodo DOI: https://doi.org/10.5281/zenodo.20688976
 
 ## Public datasets
 
