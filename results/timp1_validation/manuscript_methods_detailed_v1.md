@@ -232,7 +232,7 @@ annotations were not used as statistical selection criteria.
 The GSE180394 external workflow repeated the discovery scoring rules. Coverage
 was assessed before analysis. TIMP1 and all 12 core genes were available.
 Signature coverage ranged from 90.9% to 100%. The stringent module had high
-coverage; 399 of 421 requested genes were available in the principal input
+coverage; 401 of 421 requested genes were available in the principal input
 coverage table.
 
 The stringent module score was calculated by standardizing each available

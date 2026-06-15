@@ -36,7 +36,7 @@ the NCBI human `gene_info` table were used to map and aggregate expression to
 | Feature set | Available | Requested | Coverage |
 |---|---:|---:|---:|
 | TIMP1 | 1 | 1 | 100% |
-| Stringent TIMP1 module | 399 | 421 | 94.8% |
+| Stringent TIMP1 module | 401 | 421 | 95.2% |
 | Core module | 12 | 12 | 100% |
 | ECM remodeling | 21 | 21 | 100% |
 | Collagen formation | 13 | 13 | 100% |
@@ -88,7 +88,7 @@ programs.
 
 ## 6. Stringent module score replication
 
-The stringent module score used 399 of the 421 module genes:
+The stringent module score used 401 of the 421 module genes:
 
 | Scope | Spearman rho | P value |
 |---|---:|---:|

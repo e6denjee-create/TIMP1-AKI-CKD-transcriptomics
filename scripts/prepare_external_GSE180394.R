@@ -149,7 +149,10 @@ core <- read.csv(
   file.path(validation_result_dir(), "core_module_genes_summary.csv"),
   stringsAsFactors = FALSE
 )
-available <- rownames(analysis_expression)
+signature_table$gene <- toupper(signature_table$gene)
+stringent$gene <- toupper(stringent$gene)
+core$gene <- toupper(core$gene)
+available <- toupper(rownames(analysis_expression))
 
 coverage_rows <- list(
   data.frame(
